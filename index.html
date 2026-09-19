@@ -1148,64 +1148,47 @@ textarea.modalField{min-height:86px;resize:vertical}
 }
 
 
-/* ============================================================
-   GITHUB / EĞİTMEN API OTURUMU
-============================================================ */
-.authOverlay{
-  position:fixed;inset:0;z-index:9999;
-  display:flex;align-items:center;justify-content:center;padding:20px;
-  background:linear-gradient(145deg,#eef8fd,#f7fbfd 55%,#eaf5fb);
-}
-.authCard{
-  width:min(430px,100%);background:#fff;border:1px solid var(--line);
-  border-radius:24px;padding:30px;box-shadow:0 24px 70px rgba(7,57,92,.16);
-}
-.authLogo{
-  width:58px;height:58px;border-radius:18px;margin-bottom:18px;
-  display:grid;place-items:center;color:#fff;font-size:28px;font-weight:900;
-  background:linear-gradient(135deg,var(--blue),var(--blue2));
-}
-.authCard h1{margin:0;color:var(--dark);font-size:25px}
-.authCard p{margin:8px 0 22px;color:var(--muted);font-size:13px;line-height:1.55}
-.authField{margin-bottom:13px}
-.authField label{display:block;font-size:11px;font-weight:800;color:var(--muted);margin-bottom:6px}
-.authField input{
-  width:100%;height:48px;border:1px solid var(--line);border-radius:12px;
-  padding:0 13px;outline:0;font-size:15px
-}
-.authField input:focus{border-color:#71bce4;box-shadow:0 0 0 3px rgba(0,139,210,.08)}
-.authBtn{
-  width:100%;height:48px;border:0;border-radius:12px;color:#fff;font-weight:900;
-  background:linear-gradient(135deg,var(--blue),var(--blue2));
-}
-.authError{min-height:18px;margin-top:12px;color:var(--red);font-size:12px;text-align:center}
-.authFoot{margin-top:18px;text-align:center;color:var(--muted);font-size:10px}
-.logoutBtn{background:#fff1f3;color:var(--red)}
+/* ===== V2 INTERAKTIF SAHNE / GITHUB WEB APP ===== */
+.sceneBadge{display:inline-flex;align-items:center;gap:6px;padding:5px 9px;border-radius:999px;background:#e8f7f8;color:#007f86;font-size:11px;font-weight:800}
+.sceneSettingsGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sceneHelp{font-size:11px;line-height:1.45;color:var(--muted);margin-top:5px}
+.previewOverlay{position:fixed;inset:0;z-index:10000;background:#071d2c;display:flex;align-items:center;justify-content:center;padding:18px}
+.previewOverlay.hidden{display:none}
+.previewShell{width:min(1180px,100%);height:min(760px,96vh);background:#f5f9fb;border-radius:24px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 28px 80px rgba(0,0,0,.35)}
+.previewTop{height:66px;background:#fff;display:flex;align-items:center;gap:14px;padding:0 18px;border-bottom:1px solid #e5edf2}
+.previewTopTitle{font-weight:800;color:#003b6a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.previewProgress{height:6px;background:#dce8ee;flex:1;border-radius:20px;overflow:hidden}
+.previewProgressBar{height:100%;background:#00a6a6;width:0;transition:width .35s ease}
+.previewClose{border:0;background:#eef4f7;width:38px;height:38px;border-radius:50%;font-size:20px;cursor:pointer}
+.previewStage{flex:1;overflow:auto;padding:34px;display:flex;justify-content:center;align-items:flex-start;background:linear-gradient(135deg,#eef8fa,#f7fbfd)}
+.previewScene{width:min(880px,100%);background:#fff;border-radius:24px;padding:34px;box-shadow:0 15px 45px rgba(0,59,106,.10);min-height:420px}
+.previewScene h1{margin:0 0 8px;color:#003b6a;font-size:clamp(26px,4vw,42px)}
+.previewScene .sceneSection{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:#00a6a6;font-weight:800;margin-bottom:10px}
+.previewScene .previewBlock{margin:18px 0;font-size:18px;line-height:1.65;color:#233745}
+.previewScene .previewInfo{padding:18px;border-left:5px solid #00a6a6;background:#edfafa;border-radius:12px}
+.previewScene img{max-width:100%;max-height:390px;object-fit:contain;border-radius:16px;display:block;margin:auto}
+.previewMedia{padding:26px;text-align:center;border:2px dashed #bfd3df;border-radius:16px;color:#607b8c;background:#f8fbfc}
+.previewQuestion{padding:20px;border-radius:16px;background:#f7fafc}
+.previewQuestion button{display:block;width:100%;text-align:left;margin:9px 0;padding:13px 15px;border:1px solid #d8e5ec;background:#fff;border-radius:12px;cursor:pointer;font:inherit}
+.previewQuestion button:hover{border-color:#00a6a6;background:#f0fbfb}
+.previewQuestion button.chosen{border-color:#00a6a6;background:#e6fafa}
+.previewBottom{min-height:74px;background:#fff;border-top:1px solid #e5edf2;display:flex;align-items:center;gap:12px;padding:12px 18px}
+.previewBottom button{border:0;border-radius:12px;padding:12px 18px;font-weight:800;cursor:pointer}
+.previewPrev{background:#edf3f6;color:#365568}
+.previewNext{margin-left:auto;background:#003b6a;color:#fff}
+.previewNext:disabled{opacity:.45;cursor:not-allowed}
+.previewTimer{font-size:12px;color:#607b8c;margin-left:auto}
+.anim-fade{animation:sceneFade .55s ease both}.anim-slide{animation:sceneSlide .55s ease both}.anim-zoom{animation:sceneZoom .5s ease both}.anim-none{animation:none}
+@keyframes sceneFade{from{opacity:0}to{opacity:1}}@keyframes sceneSlide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}@keyframes sceneZoom{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+.loginOverlay{position:fixed;inset:0;z-index:20000;background:linear-gradient(145deg,#003b6a,#005c78);display:flex;align-items:center;justify-content:center;padding:20px}
+.loginOverlay.hidden{display:none}.loginCard{width:min(420px,100%);background:#fff;border-radius:22px;padding:30px;box-shadow:0 30px 90px rgba(0,0,0,.28)}
+.loginCard h2{margin:0 0 6px;color:#003b6a}.loginCard p{margin:0 0 20px;color:#6a7f8d;font-size:13px}.loginCard input{width:100%;padding:13px 14px;border:1px solid #ccdce5;border-radius:12px;margin:7px 0;font:inherit}.loginCard button{width:100%;padding:13px;border:0;border-radius:12px;background:#003b6a;color:#fff;font-weight:800;margin-top:10px;cursor:pointer}.loginError{min-height:20px;color:#dc4c64;font-size:12px;margin-top:10px}
+@media(max-width:700px){.previewOverlay{padding:0}.previewShell{height:100%;border-radius:0}.previewStage{padding:16px}.previewScene{padding:22px;min-height:calc(100vh - 190px)}.previewBottom{padding:10px}.previewBottom button{padding:11px 13px}}
 
 </style>
 </head>
 
 <body>
-
-<div id="authOverlay" class="authOverlay">
-  <form class="authCard" onsubmit="loginSubmit(event)">
-    <div class="authLogo">T</div>
-    <h1>Eğitim Stüdyosu</h1>
-    <p>TUI BLUE Palm Garden · Yönetici girişi</p>
-    <div class="authField">
-      <label>Yönetici ID</label>
-      <input id="authUserId" autocomplete="username" value="PG9039791365" readonly>
-    </div>
-    <div class="authField">
-      <label>Şifre</label>
-      <input id="authPassword" type="password" autocomplete="current-password" placeholder="Şifrenizi giriniz" required>
-    </div>
-    <button id="authLoginBtn" class="authBtn" type="submit">Giriş Yap</button>
-    <div id="authError" class="authError"></div>
-    <div class="authFoot">Yetkisiz erişim engellenir ve tüm API işlemleri sunucuda doğrulanır.</div>
-  </form>
-</div>
-
 
 <div class="app">
 
@@ -1238,7 +1221,6 @@ textarea.modalField{min-height:86px;resize:vertical}
     </div>
 
     <div class="topActions">
-<button class="btn logoutBtn" type="button" onclick="logoutEgitmen()" title="Çıkış">⎋ <span class="btnText">Çıkış</span></button>
 
       <div class="saveState" id="saveState">
         ✓ Kaydedildi
@@ -1433,12 +1415,12 @@ textarea.modalField{min-height:86px;resize:vertical}
       <div class="panelHead">
         <div class="panelTitle">Eğitim Yapısı</div>
         <div class="panelDesc">
-          Bölüm ve sayfaları buradan yönetin
+          Bölüm ve sahneleri buradan yönetin
         </div>
 
         <button class="addPage"
                 onclick="addPage()">
-          ＋ Yeni Sayfa
+          ＋ Yeni Sahne
         </button>
       </div>
 
@@ -1748,92 +1730,69 @@ textarea.modalField{min-height:86px;resize:vertical}
 </div>
 
 
+
+<div id="loginOverlay" class="loginOverlay">
+  <div class="loginCard">
+    <h2>Eğitim Stüdyosu</h2>
+    <p>Yetkili eğitmen girişi</p>
+    <input id="loginId" autocomplete="username" placeholder="Admin ID">
+    <input id="loginPassword" type="password" autocomplete="current-password" placeholder="Şifre">
+    <button onclick="studioLogin()">Giriş Yap</button>
+    <div id="loginError" class="loginError"></div>
+  </div>
+</div>
+
+<div id="previewOverlay" class="previewOverlay hidden">
+  <div class="previewShell">
+    <div class="previewTop">
+      <div id="previewTitle" class="previewTopTitle">Eğitim Önizleme</div>
+      <div class="previewProgress"><div id="previewProgressBar" class="previewProgressBar"></div></div>
+      <button class="previewClose" onclick="closePreview()" title="Kapat">×</button>
+    </div>
+    <div class="previewStage"><div id="previewScene" class="previewScene"></div></div>
+    <div class="previewBottom">
+      <button id="previewPrev" class="previewPrev" onclick="previewGo(-1)">← Geri</button>
+      <span id="previewCounter"></span>
+      <span id="previewTimer" class="previewTimer"></span>
+      <button id="previewNext" class="previewNext" onclick="previewGo(1)">Devam →</button>
+    </div>
+  </div>
+</div>
+
 <script>
 
-/* ============================================================
-   GITHUB -> APPS SCRIPT EĞİTMEN API
-   Aşağıdaki URL'yi Apps Script yeni dağıtım /exec adresinizle değiştirin.
-============================================================ */
-const EGITMEN_API_URL = 'https://script.google.com/macros/s/AKfycbwILET73oxPT8j7QWtoQSZ3HLbOWSWrFWczIDp484jx0dQjGRKRayEM-CKibHD6rzC7/exec';
-const EGITMEN_SESSION_KEY = 'TBPG_EGITMEN_SESSION_V1';
-let EGITMEN_TOKEN = localStorage.getItem(EGITMEN_SESSION_KEY) || '';
 
-async function apiCall(action, data){
-  if(!EGITMEN_API_URL || EGITMEN_API_URL.indexOf('BURAYA_')===0){
-    throw new Error('Apps Script API URL henüz tanımlanmadı.');
-  }
-  const payload = Object.assign({}, data || {}, {
-    api:'egitmen',
-    action:action,
-    token:EGITMEN_TOKEN
-  });
-  const response = await fetch(EGITMEN_API_URL, {
-    method:'POST',
-    redirect:'follow',
-    headers:{'Content-Type':'text/plain;charset=utf-8'},
-    body:JSON.stringify(payload)
-  });
-  const text = await response.text();
+/* ============================================================
+   GITHUB -> APPS SCRIPT API
+============================================================ */
+const EGITMEN_API_URL='https://script.google.com/macros/s/AKfycbwILET73oxPT8j7QWtoQSZ3HLbOWSWrFWczIDp484jx0dQjGRKRayEM-CKibHD6rzC7/exec';
+const EGITMEN_TOKEN_KEY='TBPG_EGITMEN_TOKEN_V1';
+
+async function apiCall(action,data){
+  const payload={api:'egitmen',action:action,data:data||{},token:localStorage.getItem(EGITMEN_TOKEN_KEY)||''};
+  const response=await fetch(EGITMEN_API_URL,{method:'POST',redirect:'follow',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)});
+  const text=await response.text();
   let res;
-  try{ res=JSON.parse(text); }
-  catch(e){ throw new Error('Sunucudan geçersiz yanıt alındı.'); }
-  if(!res || res.ok===false){
-    if(res && res.code==='AUTH'){
-      EGITMEN_TOKEN='';
-      localStorage.removeItem(EGITMEN_SESSION_KEY);
-      showLogin();
-    }
-    throw new Error((res && res.message) || 'İşlem başarısız.');
-  }
+  try{res=JSON.parse(text);}catch(e){throw new Error('Sunucudan geçersiz yanıt alındı.');}
+  if(res && res.authRequired){localStorage.removeItem(EGITMEN_TOKEN_KEY);showLogin();throw new Error(res.mesaj||'Oturum sona erdi.');}
   return res;
 }
-
-function showLogin(message){
-  document.getElementById('authOverlay').classList.remove('hidden');
-  document.getElementById('authError').textContent=message || '';
-  setTimeout(()=>document.getElementById('authPassword').focus(),50);
-}
-function hideLogin(){
-  document.getElementById('authOverlay').classList.add('hidden');
-  document.getElementById('authError').textContent='';
-  document.getElementById('authPassword').value='';
-}
-async function loginSubmit(event){
-  event.preventDefault();
-  const btn=document.getElementById('authLoginBtn');
-  const password=document.getElementById('authPassword').value;
-  btn.disabled=true; btn.textContent='Kontrol ediliyor...';
-  document.getElementById('authError').textContent='';
+function showLogin(){document.getElementById('loginOverlay').classList.remove('hidden')}
+function hideLogin(){document.getElementById('loginOverlay').classList.add('hidden')}
+async function studioLogin(){
+  const err=document.getElementById('loginError'); err.textContent='Giriş yapılıyor...';
   try{
-    const res=await apiCall('login',{userId:'PG9039791365',password:password,token:''});
-    EGITMEN_TOKEN=res.token;
-    localStorage.setItem(EGITMEN_SESSION_KEY,EGITMEN_TOKEN);
-    hideLogin();
-    initStudio();
-  }catch(err){
-    showLogin(err.message || String(err));
-  }finally{
-    btn.disabled=false; btn.textContent='Giriş Yap';
-  }
+    const res=await apiCall('login',{id:document.getElementById('loginId').value.trim(),password:document.getElementById('loginPassword').value});
+    if(!res || !res.basarili){err.textContent=(res&&res.mesaj)||'Giriş başarısız.';return}
+    if(res.token)localStorage.setItem(EGITMEN_TOKEN_KEY,res.token);
+    err.textContent=''; hideLogin(); initStudioAfterAuth();
+  }catch(e){err.textContent=e.message||String(e)}
 }
-async function logoutEgitmen(){
-  try{ if(EGITMEN_TOKEN) await apiCall('logout',{}); }catch(e){}
-  EGITMEN_TOKEN='';
-  localStorage.removeItem(EGITMEN_SESSION_KEY);
-  showLogin('Oturum kapatıldı.');
+async function checkStudioSession(){
+  if(!localStorage.getItem(EGITMEN_TOKEN_KEY)){showLogin();return false}
+  try{const res=await apiCall('session',{});if(res&&res.basarili){hideLogin();return true}}catch(e){}
+  showLogin();return false;
 }
-async function verifySession(){
-  if(!EGITMEN_TOKEN){ showLogin(); return false; }
-  try{
-    await apiCall('session',{});
-    hideLogin();
-    return true;
-  }catch(e){
-    showLogin('Oturum süreniz dolmuş. Lütfen tekrar giriş yapın.');
-    return false;
-  }
-}
-
 
 /* ============================================================
    DATA MODEL
@@ -1921,12 +1880,29 @@ function currentBlock(){
 }
 
 
+
+function ensureSceneDefaults(page){
+  if(!page) return page;
+  if(!page.scene) page.scene={};
+  if(!page.scene.animation) page.scene.animation='fade';
+  if(page.scene.minSeconds===undefined || page.scene.minSeconds===null) page.scene.minSeconds=0;
+  if(page.scene.requireInteraction===undefined) page.scene.requireInteraction=false;
+  if(!page.scene.layout) page.scene.layout='standard';
+  return page;
+}
+function normalizeAllScenes(){(state.pages||[]).forEach(ensureSceneDefaults)}
+function updateSceneSetting(key,value){
+  const p=ensureSceneDefaults(currentPage()); if(!p)return;
+  p.scene[key]=value; changed(); renderProperties();
+}
+
 /* ============================================================
    RENDER
 ============================================================ */
 
 function render(){
 
+  normalizeAllScenes();
   renderStructure();
   renderPage();
   renderProperties();
@@ -2005,11 +1981,11 @@ function renderStructure(){
         <div class="pageInfo">
 
           <div class="pageName">
-            ${escapeHtml(p.title || 'Başlıksız Sayfa')}
+            ${escapeHtml(p.title || 'Başlıksız Sahne')}
           </div>
 
           <div class="pageType">
-            ${p.blocks.length} içerik
+            ${p.blocks.length} içerik · ${escapeHtml((ensureSceneDefaults(p).scene.animation||"fade").toUpperCase())}
           </div>
 
         </div>
@@ -2040,7 +2016,7 @@ function renderPage(){
 
   document.getElementById('pageIndicator')
     .textContent=
-      'Sayfa '+(state.selectedPage+1);
+      'Sahne '+(state.selectedPage+1);
 
 
   document.getElementById('pageTitle')
@@ -2310,6 +2286,32 @@ function renderProperties(){
       </div>
 
       <div class="propertyGroup">
+        <label class="propertyLabel">İnteraktif Sahne</label>
+        <div class="sceneSettingsGrid">
+          <div>
+            <div class="sceneHelp">Giriş animasyonu</div>
+            <select class="field" onchange="updateSceneSetting('animation',this.value)">
+              <option value="fade" ${ensureSceneDefaults(currentPage()).scene.animation==='fade'?'selected':''}>Yumuşak Geçiş</option>
+              <option value="slide" ${ensureSceneDefaults(currentPage()).scene.animation==='slide'?'selected':''}>Aşağıdan Giriş</option>
+              <option value="zoom" ${ensureSceneDefaults(currentPage()).scene.animation==='zoom'?'selected':''}>Yakınlaşma</option>
+              <option value="none" ${ensureSceneDefaults(currentPage()).scene.animation==='none'?'selected':''}>Animasyonsuz</option>
+            </select>
+          </div>
+          <div>
+            <div class="sceneHelp">Minimum süre (sn)</div>
+            <input class="field" type="number" min="0" max="600"
+              value="${Number(ensureSceneDefaults(currentPage()).scene.minSeconds)||0}"
+              onchange="updateSceneSetting('minSeconds',Math.max(0,Number(this.value)||0))">
+          </div>
+        </div>
+        <label style="display:flex;gap:9px;align-items:flex-start;margin-top:10px;font-size:12px">
+          <input type="checkbox" ${ensureSceneDefaults(currentPage()).scene.requireInteraction?'checked':''}
+            onchange="updateSceneSetting('requireInteraction',this.checked)">
+          <span><strong>Devam etmek için etkileşim gerekli</strong><br><span class="sceneHelp">Sahnede soru varsa personel seçim yapmadan ilerleyemez.</span></span>
+        </label>
+      </div>
+
+      <div class="propertyGroup">
 
         <label class="propertyLabel">
           Yayın Durumu
@@ -2466,9 +2468,11 @@ function addPage(){
     id:createId('P'),
 
     title:
-      'Yeni Sayfa '+(state.pages.length+1),
+      'Yeni Sahne '+(state.pages.length+1),
 
     section:'Bölüm 1',
+
+    scene:{animation:'fade',minSeconds:0,requireInteraction:false,layout:'standard'},
 
     blocks:[]
 
@@ -2732,45 +2736,41 @@ function chooseImage(){
 
 
 async function imageSelected(event){
-  const file=event.target.files[0];
-  if(!file) return;
+  const file=event.target.files[0]; if(!file)return;
   const allowed=['image/jpeg','image/png','image/webp'];
-  if(!allowed.includes(file.type)){
-    alert('JPG, PNG veya WebP fotoğraf seçiniz.');
-    event.target.value=''; return;
-  }
+  if(!allowed.includes(file.type)){alert('JPG, PNG veya WebP fotoğraf seçiniz.');event.target.value='';return}
   showOptimizer('Fotoğraf optimize ediliyor...',15);
   try{
-    const optimized=await optimizeImage(file);
-    showOptimizer('Boyut küçültüldü. Yükleniyor...',55);
+    const optimized=await optimizeImage(file); showOptimizer('Boyut küçültüldü. Yükleniyor...',55);
     const blockId=createId('B');
-    const res=await apiCall('uploadImage',{
-      dataUrl:optimized.dataUrl,
-      egitimId:state.id || 'TASLAK',
-      blockId:blockId,
-      originalName:file.name
-    });
+    const res=await apiCall('uploadImage',{dataUrl:optimized.dataUrl,egitimId:state.id||'TASLAK',blockId:blockId,originalName:file.name});
+    if(!res||!res.basarili)throw new Error((res&&res.mesaj)||'Fotoğraf yüklenemedi.');
     showOptimizer('Fotoğraf hazır',100);
-    addOptimizedImageBlock(blockId,file,optimized,res.url || '',res.fileId || '',optimized.dataUrl);
+    addOptimizedImageBlock(blockId,file,optimized,res.url,res.fileId);
     setTimeout(hideOptimizer,300);
-  }catch(err){
-    hideOptimizer();
-    alert('Fotoğraf yüklenemedi: '+(err.message || err));
-  }
+  }catch(err){hideOptimizer();alert('Fotoğraf yüklenemedi: '+(err.message||err))}
   event.target.value='';
 }
 
-function addOptimizedImageBlock(blockId,file,optimized,url,fileId,localDataUrl){
+function addOptimizedImageBlock(blockId,file,optimized,url,fileId){
   saveUndo();
+
   const block={
-    id:blockId,type:'image',name:file.name,url:url,
-    dataUrl:localDataUrl || url,fileId:fileId || '',
-    width:optimized.width,height:optimized.height,
+    id:blockId,
+    type:'image',
+    name:file.name,
+    url:url,
+    dataUrl:url,
+    fileId:fileId || '',
+    width:optimized.width,
+    height:optimized.height,
     optimizedKB:Math.round(optimized.bytes/1024)
   };
+
   currentPage().blocks.push(block);
   state.selectedBlock=block.id;
-  changed(); render();
+  changed();
+  render();
 }
 
 /*
@@ -3161,20 +3161,14 @@ function changed(){
 
 async function autoSave(){
   const saveState=document.getElementById('saveState');
-  saveState.innerHTML='● Kaydediliyor...';
-  saveState.style.color='#f5a623';
+  saveState.innerHTML='● Kaydediliyor...'; saveState.style.color='#f5a623';
+  try{localStorage.setItem('TBPG_EGITMEN_TASLAK',JSON.stringify(state))}catch(e){}
   try{
-    localStorage.setItem('TBPG_EGITMEN_TASLAK',JSON.stringify(state));
-    const res=await apiCall('saveDraft',{state:serverState()});
-    if(res.egitimId && !state.id) state.id=res.egitimId;
-    localStorage.setItem('TBPG_EGITMEN_TASLAK',JSON.stringify(state));
-    saveState.innerHTML='✓ Kaydedildi';
-    saveState.style.color='var(--green)';
-  }catch(err){
-    console.error('Eğitim kayıt hatası:',err);
-    saveState.innerHTML='⚠ Sunucuya kaydedilemedi';
-    saveState.style.color='var(--red)';
-  }
+    const res=await apiCall('saveDraft',serverState());
+    if(!res||!res.basarili)throw new Error((res&&res.mesaj)||'Kaydedilemedi');
+    if(res.egitimId&&!state.id)state.id=res.egitimId;
+    saveState.innerHTML='✓ Kaydedildi'; saveState.style.color='var(--green)';
+  }catch(err){console.error(err);saveState.innerHTML='⚠ Sunucuya kaydedilemedi';saveState.style.color='var(--red)'}
 }
 
 function serverState(){
@@ -3197,20 +3191,70 @@ function serverState(){
    PREVIEW / PUBLISH
 ============================================================ */
 
+let previewIndex=0,previewUnlockedAt=0,previewInteracted=false,previewTick=null;
+
 function previewTraining(){
-
-  state.selectedBlock=null;
-
-  render();
-
-
-  alert(
-    'Canlı önizleme hazır. '+
-    'Bir sonraki aşamada tam ekran personel önizlemesini bağlayacağız.'
-  );
-
+  if(!state.pages || !state.pages.length){alert('Önizlenecek sahne bulunamadı.');return}
+  normalizeAllScenes(); state.selectedBlock=null; render();
+  previewIndex=Math.max(0,Math.min(state.selectedPage||0,state.pages.length-1));
+  document.getElementById('previewTitle').textContent=state.title||'Eğitim Önizleme';
+  document.getElementById('previewOverlay').classList.remove('hidden');
+  renderPreviewScene();
 }
-
+function closePreview(){
+  document.getElementById('previewOverlay').classList.add('hidden');
+  if(previewTick){clearInterval(previewTick);previewTick=null}
+}
+function previewGo(delta){
+  if(delta>0 && document.getElementById('previewNext').disabled)return;
+  const next=previewIndex+delta;
+  if(next<0)return;
+  if(next>=state.pages.length){closePreview();alert('Önizleme tamamlandı.');return}
+  previewIndex=next; renderPreviewScene();
+}
+function markPreviewInteraction(btn){
+  previewInteracted=true;
+  document.querySelectorAll('#previewScene .previewQuestion button').forEach(x=>x.classList.remove('chosen'));
+  if(btn)btn.classList.add('chosen');
+  updatePreviewGate();
+}
+function previewBlockHtml(block){
+  if(block.type==='text') return `<div class="previewBlock">${escapeHtml(block.content||'').replace(/\n/g,'<br>')}</div>`;
+  if(block.type==='info') return `<div class="previewBlock previewInfo">${escapeHtml(block.content||'').replace(/\n/g,'<br>')}</div>`;
+  if(block.type==='image') return `<div class="previewBlock"><img src="${escapeHtml(block.url||block.dataUrl||'')}" alt=""></div>`;
+  if(block.type==='video') return `<div class="previewBlock previewMedia">▶ Video<br><small>${escapeHtml(block.url||'Bağlantı eklenmedi')}</small></div>`;
+  if(block.type==='pdf') return `<div class="previewBlock previewMedia">▤ PDF / Sunum<br><small>${escapeHtml(block.url||'Bağlantı eklenmedi')}</small></div>`;
+  if(block.type==='question') return `<div class="previewBlock previewQuestion"><strong>${escapeHtml(block.question||'Soru')}</strong>${(block.options||[]).map((o,i)=>`<button onclick="markPreviewInteraction(this)">${String.fromCharCode(65+i)}. ${escapeHtml(o)}</button>`).join('')}</div>`;
+  return '';
+}
+function renderPreviewScene(){
+  if(previewTick){clearInterval(previewTick);previewTick=null}
+  const page=ensureSceneDefaults(state.pages[previewIndex]);
+  previewInteracted=false;
+  previewUnlockedAt=Date.now()+((Number(page.scene.minSeconds)||0)*1000);
+  const scene=document.getElementById('previewScene');
+  scene.className='previewScene anim-'+(page.scene.animation||'fade');
+  scene.innerHTML=`<div class="sceneSection">${escapeHtml(page.section||'Bölüm 1')} · Sahne ${previewIndex+1}</div><h1>${escapeHtml(page.title||'Başlıksız Sahne')}</h1>${(page.blocks||[]).map(previewBlockHtml).join('')}`;
+  document.getElementById('previewCounter').textContent=`${previewIndex+1} / ${state.pages.length}`;
+  document.getElementById('previewProgressBar').style.width=((previewIndex+1)/state.pages.length*100)+'%';
+  document.getElementById('previewPrev').disabled=previewIndex===0;
+  const next=document.getElementById('previewNext');
+  next.textContent=previewIndex===state.pages.length-1?'Tamamla ✓':'Devam →';
+  updatePreviewGate();
+  previewTick=setInterval(updatePreviewGate,250);
+}
+function updatePreviewGate(){
+  const page=ensureSceneDefaults(state.pages[previewIndex]);
+  const remain=Math.max(0,Math.ceil((previewUnlockedAt-Date.now())/1000));
+  const hasQuestion=(page.blocks||[]).some(b=>b.type==='question');
+  const interactionBlocked=!!page.scene.requireInteraction && hasQuestion && !previewInteracted;
+  const timeBlocked=remain>0;
+  document.getElementById('previewNext').disabled=timeBlocked||interactionBlocked;
+  let msg='';
+  if(timeBlocked)msg=`${remain} sn`;
+  else if(interactionBlocked)msg='Bir seçim yapınız';
+  document.getElementById('previewTimer').textContent=msg;
+}
 
 function publishTraining(){
 
@@ -3290,19 +3334,16 @@ function showEditor(){
 }
 
 async function loadEducations(){
-  const loading=document.getElementById('educationLoading');
-  const grid=document.getElementById('educationGrid');
-  const empty=document.getElementById('educationEmpty');
-  loading.classList.remove('hidden'); grid.innerHTML=''; empty.classList.add('hidden');
+  const loading=document.getElementById('educationLoading'),grid=document.getElementById('educationGrid'),empty=document.getElementById('educationEmpty');
+  loading.classList.remove('hidden');grid.innerHTML='';empty.classList.add('hidden');
   try{
     const res=await apiCall('list',{});
     loading.classList.add('hidden');
-    allEducations=Array.isArray(res.egitimler) ? res.egitimler : [];
-    updateEducationStats(); renderEducationCards();
+    allEducations=res&&Array.isArray(res.egitimler)?res.egitimler:[];
+    updateEducationStats();renderEducationCards();
   }catch(err){
     loading.classList.add('hidden');
-    grid.innerHTML=`<div style="grid-column:1/-1;padding:30px;background:#fff;border-radius:15px;color:#dc4c64">
-      Eğitimler yüklenemedi.<br><br>${escapeHtml(err.message || String(err))}</div>`;
+    grid.innerHTML=`<div style="grid-column:1/-1;padding:30px;background:#fff;border-radius:15px;color:#dc4c64">Eğitimler yüklenemedi.<br><br>${escapeHtml(err.message||String(err))}</div>`;
   }
 }
 
@@ -3562,90 +3603,55 @@ async function coverImageSelected(event){
 }
 
 async function confirmCreateTraining(){
-  const title=(document.getElementById('newTrainingTitle').value || '').trim();
-  if(!title) return;
-  const departments=selectedDepartments();
-  if(!departments.length){ alert('En az bir hedef departman seçiniz.'); return; }
-
-  const btn=document.getElementById('createTrainingConfirmBtn');
-  btn.disabled=true; btn.textContent='Oluşturuluyor...';
-
-  const baseState={
-    id:null,title:title,
-    description:(document.getElementById('newTrainingDescription').value || '').trim(),
-    coverUrl:'',coverFileId:'',
-    coverPreviewDataUrl:pendingCover ? pendingCover.localDataUrl : '',
-    category:(document.getElementById('newTrainingCategory').value || '').trim(),
-    requirement:document.getElementById('newTrainingRequirement').value,
-    departments:departments,status:'TASLAK',selectedPage:0,selectedBlock:null,
-    pages:[{id:createId('P'),title:'Giriş',section:'Bölüm 1',
-      blocks:[{id:createId('B'),type:'text',content:'Eğitim içeriğinizi buradan oluşturmaya başlayın.'}]}]
-  };
-
+  const title=(document.getElementById('newTrainingTitle').value||'').trim(); if(!title)return;
+  const departments=selectedDepartments(); if(!departments.length){alert('En az bir hedef departman seçiniz.');return}
+  const btn=document.getElementById('createTrainingConfirmBtn');btn.disabled=true;btn.textContent='Oluşturuluyor...';
+  const baseState={id:null,title,description:(document.getElementById('newTrainingDescription').value||'').trim(),coverUrl:'',coverFileId:'',coverPreviewDataUrl:pendingCover?pendingCover.localDataUrl:'',category:(document.getElementById('newTrainingCategory').value||'').trim(),requirement:document.getElementById('newTrainingRequirement').value,departments,status:'TASLAK',selectedPage:0,selectedBlock:null,pages:[{id:createId('P'),title:'Giriş',section:'Bölüm 1',scene:{animation:'fade',minSeconds:0,requireInteraction:false,layout:'standard'},blocks:[{id:createId('B'),type:'text',content:'Eğitim içeriğinizi buradan oluşturmaya başlayın.'}]}]};
   try{
     if(pendingCover){
       showOptimizer('Kapak görseli yükleniyor...',60);
-      const res=await apiCall('uploadImage',{
-        dataUrl:pendingCover.optimized.dataUrl,
-        egitimId:'YENI_EGITIM',
-        blockId:'KAPAK_'+Date.now(),
-        originalName:pendingCover.file.name
-      });
-      baseState.coverUrl=res.url || '';
-      baseState.coverFileId=res.fileId || '';
+      const res=await apiCall('uploadImage',{dataUrl:pendingCover.optimized.dataUrl,egitimId:'YENI_EGITIM',blockId:'KAPAK_'+Date.now(),originalName:pendingCover.file.name});
       hideOptimizer();
+      if(!res||!res.basarili)throw new Error((res&&res.mesaj)||'Kapak görseli yüklenemedi.');
+      baseState.coverUrl=res.url||'';baseState.coverFileId=res.fileId||'';
     }
-    state=baseState; undoStack=[]; redoStack=[];
-    localStorage.setItem('TBPG_EGITMEN_TASLAK',JSON.stringify(state));
-    closeNewTrainingModal(); showEditor();
-    await autoSave();
-  }catch(err){
-    hideOptimizer();
-    alert('Eğitim oluşturulamadı: '+(err.message || err));
-  }finally{
-    btn.disabled=false; btn.textContent='＋ Eğitimi Oluştur';
-  }
+    state=baseState;undoStack=[];redoStack=[];
+    try{localStorage.setItem('TBPG_EGITMEN_TASLAK',JSON.stringify(state))}catch(e){}
+    closeNewTrainingModal();showEditor();await autoSave();
+  }catch(err){hideOptimizer();alert('Eğitim oluşturulamadı: '+(err.message||err))}
+  finally{btn.disabled=false;btn.textContent='＋ Eğitimi Oluştur'}
 }
 
+
 async function openEducation(egitimId){
-  if(!egitimId) return;
-  const loading=document.getElementById('educationLoading');
-  loading.classList.remove('hidden');
+  if(!egitimId)return;
+  const loading=document.getElementById('educationLoading');loading.classList.remove('hidden');
   try{
     const res=await apiCall('get',{egitimId:egitimId});
     loading.classList.add('hidden');
-    if(!res.state) throw new Error('Eğitim verisi bulunamadı.');
-    state=res.state;
-    state.coverPreviewDataUrl=state.coverUrl || '';
-    state.selectedPage=0; state.selectedBlock=null;
-    (state.pages || []).forEach(function(page){
-      (page.blocks || []).forEach(function(block){
-        if(block.type==='image' && !block.dataUrl) block.dataUrl=block.url || '';
-      });
-    });
-    undoStack=[]; redoStack=[];
-    localStorage.setItem('TBPG_EGITMEN_TASLAK',JSON.stringify(state));
+    if(!res||!res.basarili||!res.state){alert('Eğitim açılamadı.');return}
+    state=res.state; normalizeAllScenes();
+    state.coverPreviewDataUrl=state.coverUrl||'';state.selectedPage=0;state.selectedBlock=null;undoStack=[];redoStack=[];
+    try{localStorage.setItem('TBPG_EGITMEN_TASLAK',JSON.stringify(state))}catch(e){}
     showEditor();
-  }catch(err){
-    loading.classList.add('hidden');
-    alert('Eğitim açılamadı: '+(err.message || err));
-  }
+  }catch(err){loading.classList.add('hidden');alert('Eğitim açılamadı: '+(err.message||err))}
 }
+
 
 /* ============================================================
    INITIALIZE
 ============================================================ */
 
-function initStudio(){
+async function initStudioAfterAuth(){
   document.querySelector('.workspace').classList.add('hidden');
   document.getElementById('educationDashboard').classList.remove('hidden');
   document.getElementById('backToDashboardBtn').classList.add('hidden');
   document.getElementById('trainingName').textContent='Eğitim Stüdyosu';
   loadEducations();
 }
-
 async function init(){
-  if(await verifySession()) initStudio();
+  const ok=await checkStudioSession();
+  if(ok)initStudioAfterAuth();
 }
 
 
