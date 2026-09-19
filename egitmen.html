@@ -1,0 +1,3679 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+  <title>TUI BLUE Palm Garden | Eğitim Stüdyosu</title>
+
+  <style>
+    :root{
+      --blue:#0067b1;
+      --blue2:#008bd2;
+      --dark:#07395c;
+      --bg:#f4f7fa;
+      --panel:#ffffff;
+      --line:#dfe8ef;
+      --text:#173042;
+      --muted:#708494;
+      --green:#18a875;
+      --red:#dc4c64;
+      --orange:#f5a623;
+      --radius:18px;
+      --shadow:0 10px 35px rgba(25,67,93,.10);
+    }
+
+    *{box-sizing:border-box}
+
+    html,body{
+      margin:0;
+      width:100%;
+      height:100%;
+      font-family:Arial,Helvetica,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+    }
+
+    button,input,textarea,select{
+      font:inherit;
+    }
+
+    button{
+      cursor:pointer;
+    }
+
+    .app{
+      height:100vh;
+      display:flex;
+      flex-direction:column;
+      overflow:hidden;
+    }
+
+    /* =========================================================
+       TOP BAR
+    ========================================================= */
+
+    .topbar{
+      height:68px;
+      flex:0 0 68px;
+      background:#fff;
+      border-bottom:1px solid var(--line);
+      display:flex;
+      align-items:center;
+      padding:0 18px;
+      gap:14px;
+      z-index:20;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:250px;
+    }
+
+    .brandMark{
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      background:linear-gradient(135deg,var(--blue),var(--blue2));
+      color:white;
+      display:grid;
+      place-items:center;
+      font-size:22px;
+      font-weight:800;
+    }
+
+    .brandTitle{
+      font-size:15px;
+      font-weight:800;
+    }
+
+    .brandSub{
+      font-size:11px;
+      color:var(--muted);
+      margin-top:2px;
+    }
+
+    .topCenter{
+      flex:1;
+      min-width:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .trainingName{
+      max-width:500px;
+      overflow:hidden;
+      white-space:nowrap;
+      text-overflow:ellipsis;
+      font-weight:800;
+    }
+
+    .topActions{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .btn{
+      border:0;
+      border-radius:11px;
+      padding:10px 14px;
+      background:#edf3f7;
+      color:var(--dark);
+      font-weight:700;
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+    }
+
+    .btn:hover{
+      filter:brightness(.98);
+    }
+
+    .btnPrimary{
+      color:#fff;
+      background:linear-gradient(135deg,var(--blue),var(--blue2));
+    }
+
+    .btnPublish{
+      color:#fff;
+      background:var(--green);
+    }
+
+    .iconBtn{
+      width:40px;
+      height:40px;
+      padding:0;
+      display:grid;
+      place-items:center;
+    }
+
+    .saveState{
+      font-size:12px;
+      color:var(--green);
+      display:flex;
+      align-items:center;
+      gap:5px;
+      white-space:nowrap;
+    }
+
+    /* =========================================================
+       MAIN LAYOUT
+    ========================================================= */
+
+    .workspace{
+      min-height:0;
+      flex:1;
+      display:grid;
+      grid-template-columns:280px 1fr 310px;
+    }
+
+    .leftPanel,
+    .rightPanel{
+      background:#fff;
+      min-height:0;
+      overflow:auto;
+    }
+
+    .leftPanel{
+      border-right:1px solid var(--line);
+    }
+
+    .rightPanel{
+      border-left:1px solid var(--line);
+    }
+
+    .panelHead{
+      padding:18px;
+      border-bottom:1px solid var(--line);
+      position:sticky;
+      top:0;
+      background:#fff;
+      z-index:5;
+    }
+
+    .panelTitle{
+      font-size:14px;
+      font-weight:800;
+    }
+
+    .panelDesc{
+      font-size:11px;
+      color:var(--muted);
+      margin-top:4px;
+    }
+
+    /* =========================================================
+       LEFT STRUCTURE
+    ========================================================= */
+
+    .addPage{
+      width:100%;
+      margin-top:12px;
+      border:1px dashed #9bc5df;
+      background:#f3fbff;
+      color:var(--blue);
+      border-radius:12px;
+      padding:11px;
+      font-weight:800;
+    }
+
+    .structure{
+      padding:12px;
+    }
+
+    .section{
+      margin-bottom:12px;
+    }
+
+    .sectionTitle{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 6px;
+      font-size:12px;
+      font-weight:800;
+      color:var(--dark);
+    }
+
+    .sectionTitle span:first-child{
+      color:#9aacb8;
+    }
+
+    .pageItem{
+      padding:10px;
+      border:1px solid transparent;
+      border-radius:12px;
+      margin:4px 0;
+      display:flex;
+      gap:9px;
+      align-items:center;
+      cursor:pointer;
+      transition:.15s;
+    }
+
+    .pageItem:hover{
+      background:#f4f8fb;
+    }
+
+    .pageItem.active{
+      background:#eaf6fd;
+      border-color:#a8d7f0;
+    }
+
+    .pageNumber{
+      width:28px;
+      height:28px;
+      border-radius:9px;
+      background:#edf3f7;
+      display:grid;
+      place-items:center;
+      font-size:11px;
+      font-weight:800;
+      flex:none;
+    }
+
+    .pageItem.active .pageNumber{
+      background:var(--blue);
+      color:#fff;
+    }
+
+    .pageInfo{
+      min-width:0;
+      flex:1;
+    }
+
+    .pageName{
+      font-size:12px;
+      font-weight:700;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+
+    .pageType{
+      color:var(--muted);
+      font-size:10px;
+      margin-top:2px;
+    }
+
+    /* =========================================================
+       CENTER
+    ========================================================= */
+
+    .editor{
+      min-width:0;
+      min-height:0;
+      overflow:auto;
+      padding:25px;
+      background:
+        radial-gradient(circle at 50% 0,#fff 0,#f4f7fa 58%);
+    }
+
+    .editorTools{
+      max-width:850px;
+      margin:0 auto 15px;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:center;
+    }
+
+    .deviceSwitch{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:11px;
+      padding:4px;
+      display:flex;
+      gap:3px;
+    }
+
+    .deviceSwitch button{
+      border:0;
+      background:transparent;
+      border-radius:8px;
+      padding:7px 10px;
+    }
+
+    .deviceSwitch button.active{
+      background:#e9f5fc;
+      color:var(--blue);
+    }
+
+    .canvas{
+      width:min(850px,100%);
+      min-height:580px;
+      margin:auto;
+      background:#fff;
+      border-radius:22px;
+      box-shadow:var(--shadow);
+      padding:38px;
+      transition:.25s;
+    }
+
+    .canvas.mobile{
+      max-width:410px;
+      padding:20px;
+    }
+
+    .pageTitleInput{
+      width:100%;
+      border:0;
+      outline:0;
+      font-size:29px;
+      font-weight:800;
+      color:var(--dark);
+      padding:0;
+      margin-bottom:8px;
+      background:transparent;
+    }
+
+    .pageSubtitle{
+      font-size:13px;
+      color:var(--muted);
+      margin-bottom:25px;
+    }
+
+    /* =========================================================
+       BLOCKS
+    ========================================================= */
+
+    .blocks{
+      min-height:240px;
+    }
+
+    .block{
+      position:relative;
+      border:2px solid transparent;
+      border-radius:15px;
+      padding:12px;
+      margin:10px 0;
+      transition:.15s;
+    }
+
+    .block:hover{
+      border-color:#d7e8f3;
+    }
+
+    .block.selected{
+      border-color:#66b9e6;
+      background:#fbfdff;
+    }
+
+    .blockTools{
+      display:none;
+      position:absolute;
+      right:8px;
+      top:-17px;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:9px;
+      box-shadow:0 5px 18px rgba(0,0,0,.10);
+      overflow:hidden;
+      z-index:2;
+    }
+
+    .block.selected .blockTools{
+      display:flex;
+    }
+
+    .blockTools button{
+      border:0;
+      background:#fff;
+      width:32px;
+      height:30px;
+    }
+
+    .blockTools button:hover{
+      background:#f0f5f8;
+    }
+
+    .textBlock{
+      line-height:1.65;
+      font-size:16px;
+      outline:0;
+      min-height:30px;
+    }
+
+    .infoBlock{
+      padding:16px;
+      border-radius:13px;
+      background:#eaf7ff;
+      border-left:5px solid var(--blue2);
+      line-height:1.55;
+    }
+
+    .imageBlock img{
+      display:block;
+      width:100%;
+      max-height:480px;
+      object-fit:cover;
+      border-radius:13px;
+    }
+
+    .imageMeta{
+      padding:7px 3px 0;
+      font-size:11px;
+      color:var(--muted);
+    }
+
+    .mediaPlaceholder{
+      border:2px dashed #c9dbe7;
+      border-radius:15px;
+      padding:35px 20px;
+      text-align:center;
+      background:#f8fbfd;
+      color:var(--muted);
+    }
+
+    .questionBlock{
+      background:#f7fafc;
+      border:1px solid var(--line);
+      padding:18px;
+      border-radius:14px;
+    }
+
+    .questionTitle{
+      font-weight:800;
+      margin-bottom:12px;
+    }
+
+    .questionOption{
+      padding:10px 12px;
+      background:white;
+      border:1px solid var(--line);
+      border-radius:10px;
+      margin:6px 0;
+    }
+
+    /* =========================================================
+       ADD CONTENT
+    ========================================================= */
+
+    .addContent{
+      margin-top:20px;
+      border-top:1px solid var(--line);
+      padding-top:20px;
+    }
+
+    .addTitle{
+      font-size:11px;
+      font-weight:800;
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:.5px;
+      margin-bottom:10px;
+    }
+
+    .contentButtons{
+      display:grid;
+      grid-template-columns:repeat(6,1fr);
+      gap:8px;
+    }
+
+    .contentButton{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:12px;
+      padding:12px 5px;
+      font-size:11px;
+      color:var(--dark);
+      font-weight:700;
+    }
+
+    .contentButton:hover{
+      border-color:#86c8ec;
+      background:#f4fbff;
+    }
+
+    .contentIcon{
+      display:block;
+      font-size:20px;
+      margin-bottom:6px;
+    }
+
+    /* =========================================================
+       RIGHT PROPERTIES
+    ========================================================= */
+
+    .properties{
+      padding:16px;
+    }
+
+    .propertyGroup{
+      padding-bottom:18px;
+      margin-bottom:18px;
+      border-bottom:1px solid var(--line);
+    }
+
+    .propertyLabel{
+      display:block;
+      font-size:11px;
+      color:var(--muted);
+      font-weight:700;
+      margin-bottom:7px;
+    }
+
+    .field{
+      width:100%;
+      border:1px solid var(--line);
+      border-radius:10px;
+      padding:10px 11px;
+      outline:0;
+      background:#fff;
+    }
+
+    .field:focus{
+      border-color:#71bce4;
+      box-shadow:0 0 0 3px rgba(0,139,210,.08);
+    }
+
+    textarea.field{
+      min-height:80px;
+      resize:vertical;
+    }
+
+    .row{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:8px;
+    }
+
+    .dangerBtn{
+      width:100%;
+      border:1px solid #ffd1d8;
+      background:#fff5f7;
+      color:var(--red);
+      border-radius:11px;
+      padding:10px;
+      font-weight:700;
+    }
+
+    /* =========================================================
+       IMAGE UPLOAD
+    ========================================================= */
+
+    .hidden{
+      display:none!important;
+    }
+
+    .uploadOverlay{
+      position:fixed;
+      inset:0;
+      z-index:100;
+      background:rgba(6,31,48,.50);
+      backdrop-filter:blur(4px);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+    }
+
+    .uploadBox{
+      width:min(420px,100%);
+      background:#fff;
+      border-radius:22px;
+      padding:28px;
+      text-align:center;
+      box-shadow:0 25px 70px rgba(0,0,0,.25);
+    }
+
+    .spinner{
+      width:48px;
+      height:48px;
+      border:5px solid #e5eef4;
+      border-top-color:var(--blue);
+      border-radius:50%;
+      margin:0 auto 18px;
+      animation:spin .75s linear infinite;
+    }
+
+    @keyframes spin{
+      to{transform:rotate(360deg)}
+    }
+
+    .progress{
+      height:7px;
+      background:#edf2f5;
+      border-radius:20px;
+      overflow:hidden;
+      margin-top:18px;
+    }
+
+    .progressBar{
+      width:10%;
+      height:100%;
+      background:linear-gradient(90deg,var(--blue),var(--blue2));
+      border-radius:20px;
+      transition:.25s;
+    }
+
+    /* =========================================================
+       MOBILE
+    ========================================================= */
+
+    @media(max-width:1050px){
+      .workspace{
+        grid-template-columns:240px 1fr;
+      }
+
+      .rightPanel{
+        display:none;
+      }
+    }
+
+    @media(max-width:760px){
+      .topbar{
+        height:60px;
+        flex-basis:60px;
+        padding:0 10px;
+      }
+
+      .brand{
+        min-width:0;
+      }
+
+      .brandTitle{
+        font-size:12px;
+      }
+
+      .brandSub,
+      .topCenter,
+      .saveState,
+      .btnText{
+        display:none;
+      }
+
+      .workspace{
+        display:block;
+        overflow:auto;
+      }
+
+      .leftPanel{
+        display:none;
+      }
+
+      .editor{
+        padding:12px;
+        overflow:visible;
+      }
+
+      .canvas{
+        min-height:calc(100vh - 145px);
+        padding:20px;
+        border-radius:17px;
+      }
+
+      .contentButtons{
+        grid-template-columns:repeat(3,1fr);
+      }
+
+      .pageTitleInput{
+        font-size:23px;
+      }
+    }
+
+    /* =========================================================
+   EĞİTİMLERİM DASHBOARD
+========================================================= */
+
+.educationDashboard{
+  flex:1;
+  min-height:0;
+  overflow:auto;
+  background:#f4f7fa;
+}
+
+.dashboardContainer{
+  width:min(1250px,calc(100% - 40px));
+  margin:auto;
+  padding:38px 0 60px;
+}
+
+.dashboardHero{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:30px;
+  margin-bottom:28px;
+}
+
+.dashboardEyebrow{
+  color:var(--blue);
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:1.3px;
+  margin-bottom:7px;
+}
+
+.dashboardHero h1{
+  margin:0;
+  color:var(--dark);
+  font-size:34px;
+}
+
+.dashboardHero p{
+  margin:8px 0 0;
+  color:var(--muted);
+  font-size:14px;
+}
+
+.newEducationBtn{
+  border:0;
+  border-radius:14px;
+  padding:14px 19px;
+  color:#fff;
+  background:linear-gradient(
+    135deg,
+    var(--blue),
+    var(--blue2)
+  );
+  font-weight:800;
+  box-shadow:0 8px 24px rgba(0,103,177,.20);
+}
+
+.newEducationBtn span{
+  font-size:18px;
+  margin-right:5px;
+}
+
+.dashboardStats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px;
+  margin-bottom:24px;
+}
+
+.statCard{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:17px;
+  padding:18px;
+  display:flex;
+  align-items:center;
+  gap:13px;
+}
+
+.statIcon{
+  width:43px;
+  height:43px;
+  border-radius:13px;
+  display:grid;
+  place-items:center;
+  background:#edf8fe;
+  color:var(--blue);
+  font-size:20px;
+}
+
+.statCard strong{
+  display:block;
+  font-size:23px;
+  color:var(--dark);
+}
+
+.statCard span{
+  display:block;
+  color:var(--muted);
+  font-size:11px;
+  margin-top:2px;
+}
+
+.dashboardToolbar{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:18px;
+}
+
+.educationSearch{
+  flex:1;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:13px;
+  padding:0 13px;
+}
+
+.educationSearch:focus-within{
+  border-color:#7dc4e9;
+  box-shadow:0 0 0 3px rgba(0,139,210,.07);
+}
+
+.educationSearch input{
+  width:100%;
+  height:44px;
+  border:0;
+  outline:0;
+  background:transparent;
+}
+
+.dashboardFilter{
+  height:44px;
+  min-width:165px;
+  padding:0 12px;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:13px;
+  color:var(--dark);
+}
+
+.educationGrid{
+  display:grid;
+  grid-template-columns:
+    repeat(auto-fill,minmax(270px,1fr));
+  gap:18px;
+}
+
+.educationCard{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:19px;
+  overflow:hidden;
+  transition:.2s;
+  cursor:pointer;
+}
+
+.educationCard:hover{
+  transform:translateY(-3px);
+  box-shadow:var(--shadow);
+  border-color:#bddceb;
+}
+
+.educationCover{
+  height:145px;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  background:
+    linear-gradient(
+      135deg,
+      #0067b1,
+      #009fce
+    );
+}
+
+.educationCover img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.educationCoverPlaceholder{
+  color:rgba(255,255,255,.95);
+  font-size:40px;
+  font-weight:800;
+}
+
+.educationStatus{
+  position:absolute;
+  top:12px;
+  left:12px;
+  border-radius:30px;
+  padding:6px 9px;
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.4px;
+  background:#fff;
+}
+
+.educationStatus.TASLAK{
+  color:#d48a00;
+}
+
+.educationStatus.HAZIR{
+  color:#7256d8;
+}
+
+.educationStatus.YAYINDA{
+  color:#109c70;
+}
+
+.educationStatus.ARSIV{
+  color:#7d8991;
+}
+
+.educationCardBody{
+  padding:16px;
+}
+
+.educationCardTitle{
+  min-height:42px;
+  color:var(--dark);
+  font-size:15px;
+  font-weight:800;
+  line-height:1.4;
+}
+
+.educationCardDescription{
+  margin-top:7px;
+  min-height:35px;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.5;
+}
+
+.educationCardFooter{
+  border-top:1px solid var(--line);
+  padding-top:12px;
+  margin-top:13px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.educationDate{
+  color:var(--muted);
+  font-size:10px;
+}
+
+.educationEdit{
+  border:0;
+  border-radius:9px;
+  padding:7px 10px;
+  background:#eaf6fd;
+  color:var(--blue);
+  font-size:11px;
+  font-weight:800;
+}
+
+.educationLoading{
+  padding:80px 20px;
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+}
+
+.dashboardSpinner{
+  width:42px;
+  height:42px;
+  margin:0 auto 15px;
+  border:4px solid #dfeaf0;
+  border-top-color:var(--blue);
+  border-radius:50%;
+  animation:spin .75s linear infinite;
+}
+
+.educationEmpty{
+  padding:70px 20px;
+  background:#fff;
+  border:1px dashed #b9d7e8;
+  border-radius:20px;
+  text-align:center;
+}
+
+.emptyIcon{
+  width:65px;
+  height:65px;
+  margin:auto;
+  border-radius:20px;
+  display:grid;
+  place-items:center;
+  color:#fff;
+  background:linear-gradient(
+    135deg,
+    var(--blue),
+    var(--blue2)
+  );
+  font-size:28px;
+}
+
+.educationEmpty h2{
+  margin:18px 0 7px;
+  color:var(--dark);
+}
+
+.educationEmpty p{
+  max-width:430px;
+  margin:0 auto 20px;
+  color:var(--muted);
+  line-height:1.6;
+  font-size:13px;
+}
+
+@media(max-width:760px){
+
+  .dashboardContainer{
+    width:calc(100% - 24px);
+    padding-top:22px;
+  }
+
+  .dashboardHero{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .dashboardHero h1{
+    font-size:27px;
+  }
+
+  .newEducationBtn{
+    width:100%;
+  }
+
+  .dashboardStats{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .dashboardToolbar{
+    flex-direction:column;
+  }
+
+  .educationSearch,
+  .dashboardFilter{
+    width:100%;
+  }
+
+  .educationGrid{
+    grid-template-columns:1fr;
+  }
+}
+  
+/* ============================================================
+   YENİ EĞİTİM MODALI
+============================================================ */
+.modalOverlay{
+  position:fixed; inset:0; z-index:200;
+  background:rgba(5,31,49,.58);
+  backdrop-filter:blur(6px);
+  display:flex; align-items:center; justify-content:center;
+  padding:20px;
+}
+.trainingModal{
+  width:min(760px,100%);
+  max-height:92vh; overflow:auto;
+  background:#fff; border-radius:24px;
+  box-shadow:0 30px 90px rgba(0,0,0,.28);
+}
+.trainingModalHead{
+  display:flex; align-items:flex-start; justify-content:space-between;
+  gap:18px; padding:24px 26px 18px; border-bottom:1px solid var(--line);
+}
+.trainingModalHead h2{margin:0;color:var(--dark);font-size:23px}
+.trainingModalHead p{margin:6px 0 0;color:var(--muted);font-size:12px}
+.modalClose{
+  width:40px;height:40px;border:0;border-radius:12px;
+  background:#eef4f7;color:var(--dark);font-size:22px;
+}
+.trainingModalBody{padding:24px 26px}
+.modalGrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.modalFull{grid-column:1/-1}
+.modalLabel{display:block;font-size:11px;font-weight:800;color:var(--muted);margin-bottom:7px}
+.modalField{
+  width:100%;border:1px solid var(--line);border-radius:12px;
+  padding:11px 12px;outline:0;background:#fff;color:var(--text)
+}
+.modalField:focus{border-color:#71bce4;box-shadow:0 0 0 3px rgba(0,139,210,.08)}
+textarea.modalField{min-height:86px;resize:vertical}
+.coverPicker{
+  min-height:170px;border:2px dashed #b8d6e7;border-radius:16px;
+  background:#f7fbfd;display:flex;align-items:center;justify-content:center;
+  text-align:center;overflow:hidden;cursor:pointer;position:relative
+}
+.coverPicker img{width:100%;height:190px;object-fit:cover;display:block}
+.coverPickerEmpty{padding:24px;color:var(--muted);font-size:12px}
+.coverPickerEmpty strong{display:block;color:var(--blue);font-size:14px;margin-top:7px}
+.departmentBox{
+  border:1px solid var(--line);border-radius:14px;padding:12px;
+  max-height:190px;overflow:auto;background:#fbfdfe
+}
+.departmentAll{
+  display:flex;align-items:center;gap:9px;padding:8px 5px 11px;
+  border-bottom:1px solid var(--line);font-weight:800;font-size:12px
+}
+.departmentGrid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}
+.departmentItem{
+  display:flex;align-items:center;gap:8px;padding:8px 9px;
+  background:#fff;border:1px solid var(--line);border-radius:10px;font-size:11px
+}
+.trainingModalFoot{
+  display:flex;justify-content:flex-end;gap:9px;
+  padding:17px 26px 24px;border-top:1px solid var(--line)
+}
+.modalCreateBtn:disabled{opacity:.45;cursor:not-allowed}
+@media(max-width:650px){
+  .modalGrid{grid-template-columns:1fr}
+  .modalFull{grid-column:auto}
+  .departmentGrid{grid-template-columns:1fr}
+  .trainingModalHead,.trainingModalBody,.trainingModalFoot{padding-left:18px;padding-right:18px}
+}
+
+
+/* ============================================================
+   GITHUB / EĞİTMEN API OTURUMU
+============================================================ */
+.authOverlay{
+  position:fixed;inset:0;z-index:9999;
+  display:flex;align-items:center;justify-content:center;padding:20px;
+  background:linear-gradient(145deg,#eef8fd,#f7fbfd 55%,#eaf5fb);
+}
+.authCard{
+  width:min(430px,100%);background:#fff;border:1px solid var(--line);
+  border-radius:24px;padding:30px;box-shadow:0 24px 70px rgba(7,57,92,.16);
+}
+.authLogo{
+  width:58px;height:58px;border-radius:18px;margin-bottom:18px;
+  display:grid;place-items:center;color:#fff;font-size:28px;font-weight:900;
+  background:linear-gradient(135deg,var(--blue),var(--blue2));
+}
+.authCard h1{margin:0;color:var(--dark);font-size:25px}
+.authCard p{margin:8px 0 22px;color:var(--muted);font-size:13px;line-height:1.55}
+.authField{margin-bottom:13px}
+.authField label{display:block;font-size:11px;font-weight:800;color:var(--muted);margin-bottom:6px}
+.authField input{
+  width:100%;height:48px;border:1px solid var(--line);border-radius:12px;
+  padding:0 13px;outline:0;font-size:15px
+}
+.authField input:focus{border-color:#71bce4;box-shadow:0 0 0 3px rgba(0,139,210,.08)}
+.authBtn{
+  width:100%;height:48px;border:0;border-radius:12px;color:#fff;font-weight:900;
+  background:linear-gradient(135deg,var(--blue),var(--blue2));
+}
+.authError{min-height:18px;margin-top:12px;color:var(--red);font-size:12px;text-align:center}
+.authFoot{margin-top:18px;text-align:center;color:var(--muted);font-size:10px}
+.logoutBtn{background:#fff1f3;color:var(--red)}
+
+</style>
+</head>
+
+<body>
+
+<div id="authOverlay" class="authOverlay">
+  <form class="authCard" onsubmit="loginSubmit(event)">
+    <div class="authLogo">T</div>
+    <h1>Eğitim Stüdyosu</h1>
+    <p>TUI BLUE Palm Garden · Yönetici girişi</p>
+    <div class="authField">
+      <label>Yönetici ID</label>
+      <input id="authUserId" autocomplete="username" value="PG9039791365" readonly>
+    </div>
+    <div class="authField">
+      <label>Şifre</label>
+      <input id="authPassword" type="password" autocomplete="current-password" placeholder="Şifrenizi giriniz" required>
+    </div>
+    <button id="authLoginBtn" class="authBtn" type="submit">Giriş Yap</button>
+    <div id="authError" class="authError"></div>
+    <div class="authFoot">Yetkisiz erişim engellenir ve tüm API işlemleri sunucuda doğrulanır.</div>
+  </form>
+</div>
+
+
+<div class="app">
+
+  <!-- =======================================================
+       TOP BAR
+  ======================================================== -->
+  <header class="topbar">
+
+<button
+  id="backToDashboardBtn"
+  class="btn iconBtn hidden"
+  title="Eğitimlerim"
+  onclick="showEducationDashboard()">
+  ←
+</button>
+
+    <div class="brand">
+      <div class="brandMark">T</div>
+
+      <div>
+        <div class="brandTitle">Eğitim Stüdyosu</div>
+        <div class="brandSub">TUI BLUE Palm Garden</div>
+      </div>
+    </div>
+
+    <div class="topCenter">
+      <div class="trainingName" id="trainingName">
+        Yeni Eğitim
+      </div>
+    </div>
+
+    <div class="topActions">
+<button class="btn logoutBtn" type="button" onclick="logoutEgitmen()" title="Çıkış">⎋ <span class="btnText">Çıkış</span></button>
+
+      <div class="saveState" id="saveState">
+        ✓ Kaydedildi
+      </div>
+
+      <button class="btn iconBtn"
+              title="Geri Al"
+              onclick="undoAction()">
+        ↶
+      </button>
+
+      <button class="btn iconBtn"
+              title="İleri Al"
+              onclick="redoAction()">
+        ↷
+      </button>
+
+      <button class="btn"
+              onclick="previewTraining()">
+        👁
+        <span class="btnText">Önizle</span>
+      </button>
+
+      <button class="btn btnPublish"
+              onclick="publishTraining()">
+        ✓
+        <span class="btnText">Yayınla</span>
+      </button>
+
+    </div>
+  </header>
+
+<!-- =========================================================
+     EĞİTİMLERİM ANA EKRANI
+========================================================= -->
+<section id="educationDashboard" class="educationDashboard hidden">
+
+  <div class="dashboardContainer">
+
+    <div class="dashboardHero">
+
+      <div>
+        <div class="dashboardEyebrow">EĞİTİM STÜDYOSU</div>
+        <h1>Eğitimlerim</h1>
+        <p>
+          Eğitimlerinizi oluşturun, düzenleyin,
+          önizleyin ve yayınlayın.
+        </p>
+      </div>
+
+      <button
+        class="newEducationBtn"
+        onclick="createNewTraining()">
+        <span>＋</span>
+        Yeni Eğitim Oluştur
+      </button>
+
+    </div>
+
+
+    <div class="dashboardStats">
+
+      <div class="statCard">
+        <div class="statIcon">▤</div>
+        <div>
+          <strong id="statTotal">0</strong>
+          <span>Toplam Eğitim</span>
+        </div>
+      </div>
+
+      <div class="statCard">
+        <div class="statIcon">✎</div>
+        <div>
+          <strong id="statDraft">0</strong>
+          <span>Taslak</span>
+        </div>
+      </div>
+
+      <div class="statCard">
+        <div class="statIcon">✓</div>
+        <div>
+          <strong id="statPublished">0</strong>
+          <span>Yayında</span>
+        </div>
+      </div>
+
+      <div class="statCard">
+        <div class="statIcon">◷</div>
+        <div>
+          <strong id="statReady">0</strong>
+          <span>Hazır</span>
+        </div>
+      </div>
+
+    </div>
+
+
+    <div class="dashboardToolbar">
+
+      <div class="educationSearch">
+        🔎
+        <input
+          id="educationSearchInput"
+          type="search"
+          placeholder="Eğitim ara..."
+          oninput="filterEducationCards()">
+      </div>
+
+      <select
+        id="educationStatusFilter"
+        class="dashboardFilter"
+        onchange="filterEducationCards()">
+
+        <option value="">
+          Tüm Durumlar
+        </option>
+
+        <option value="TASLAK">
+          Taslak
+        </option>
+
+        <option value="HAZIR">
+          Hazır
+        </option>
+
+        <option value="YAYINDA">
+          Yayında
+        </option>
+
+        <option value="ARSIV">
+          Arşiv
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <div
+      id="educationLoading"
+      class="educationLoading">
+
+      <div class="dashboardSpinner"></div>
+
+      <div>
+        Eğitimleriniz hazırlanıyor...
+      </div>
+
+    </div>
+
+
+    <div
+      id="educationEmpty"
+      class="educationEmpty hidden">
+
+      <div class="emptyIcon">✦</div>
+
+      <h2>İlk eğitiminizi oluşturun</h2>
+
+      <p>
+        Metin, görsel, video, PDF ve soruları
+        tek ekranda bir araya getirebilirsiniz.
+      </p>
+
+      <button
+        class="newEducationBtn"
+        onclick="createNewTraining()">
+
+        ＋ Yeni Eğitim Oluştur
+
+      </button>
+
+    </div>
+
+
+    <div
+      id="educationGrid"
+      class="educationGrid">
+    </div>
+
+  </div>
+
+</section>
+  <!-- =======================================================
+       WORKSPACE
+  ======================================================== -->
+  <main class="workspace">
+
+    <!-- LEFT -->
+    <aside class="leftPanel">
+
+      <div class="panelHead">
+        <div class="panelTitle">Eğitim Yapısı</div>
+        <div class="panelDesc">
+          Bölüm ve sayfaları buradan yönetin
+        </div>
+
+        <button class="addPage"
+                onclick="addPage()">
+          ＋ Yeni Sayfa
+        </button>
+      </div>
+
+      <div class="structure" id="structure"></div>
+
+    </aside>
+
+
+    <!-- CENTER -->
+    <section class="editor">
+
+      <div class="editorTools">
+
+        <div style="font-size:12px;color:var(--muted)">
+          <strong id="pageIndicator">Sayfa 1</strong>
+        </div>
+
+        <div class="deviceSwitch">
+
+          <button class="active"
+                  id="desktopBtn"
+                  onclick="setDevice('desktop')">
+            🖥
+          </button>
+
+          <button id="mobileBtn"
+                  onclick="setDevice('mobile')">
+            📱
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div class="canvas" id="canvas">
+
+        <input
+          id="pageTitle"
+          class="pageTitleInput"
+          value="Eğitim Başlığı"
+          oninput="updatePageTitle(this.value)"
+          placeholder="Sayfa başlığı">
+
+        <div class="pageSubtitle">
+          İçeriğinizi aşağıdaki alanda oluşturun.
+        </div>
+
+        <div class="blocks" id="blocks"></div>
+
+
+        <div class="addContent">
+
+          <div class="addTitle">
+            İçerik ekle
+          </div>
+
+          <div class="contentButtons">
+
+            <button class="contentButton"
+                    onclick="addBlock('text')">
+              <span class="contentIcon">✎</span>
+              Metin
+            </button>
+
+            <button class="contentButton"
+                    onclick="chooseImage()">
+              <span class="contentIcon">🖼</span>
+              Görsel
+            </button>
+
+            <button class="contentButton"
+                    onclick="addBlock('video')">
+              <span class="contentIcon">▶</span>
+              Video
+            </button>
+
+            <button class="contentButton"
+                    onclick="addBlock('pdf')">
+              <span class="contentIcon">▤</span>
+              PDF
+            </button>
+
+            <button class="contentButton"
+                    onclick="addBlock('info')">
+              <span class="contentIcon">ⓘ</span>
+              Bilgi
+            </button>
+
+            <button class="contentButton"
+                    onclick="addBlock('question')">
+              <span class="contentIcon">?</span>
+              Soru
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- RIGHT -->
+    <aside class="rightPanel">
+
+      <div class="panelHead">
+        <div class="panelTitle">Özellikler</div>
+        <div class="panelDesc" id="propertyDescription">
+          Sayfa ayarları
+        </div>
+      </div>
+
+      <div class="properties" id="properties">
+
+        <div class="propertyGroup">
+
+          <label class="propertyLabel">
+            Eğitim Adı
+          </label>
+
+          <input class="field"
+                 id="trainingTitleField"
+                 value="Yeni Eğitim"
+                 oninput="updateTrainingTitle(this.value)">
+
+        </div>
+
+        <div class="propertyGroup">
+
+          <label class="propertyLabel">
+            Eğitim Açıklaması
+          </label>
+
+          <textarea class="field"
+                    id="trainingDescription"
+                    placeholder="Eğitimin kısa açıklaması..."></textarea>
+
+        </div>
+
+        <div class="propertyGroup">
+
+          <label class="propertyLabel">
+            Durum
+          </label>
+
+          <select class="field">
+            <option>Taslak</option>
+            <option>Hazır</option>
+            <option>Yayında</option>
+            <option>Arşiv</option>
+          </select>
+
+        </div>
+
+        <div class="propertyGroup">
+
+          <label class="propertyLabel">
+            Eğitim Türü
+          </label>
+
+          <select class="field">
+            <option>Zorunlu</option>
+            <option>İsteğe Bağlı</option>
+          </select>
+
+        </div>
+
+      </div>
+
+    </aside>
+
+  </main>
+
+</div>
+
+
+<input type="file"
+       id="imageInput"
+       accept="image/jpeg,image/png,image/webp"
+       class="hidden"
+       onchange="imageSelected(event)">
+
+
+
+<!-- =========================================================
+     YENİ EĞİTİM MODALI
+========================================================= -->
+<div id="newTrainingModal" class="modalOverlay hidden" onclick="modalBackdropClose(event)">
+  <div class="trainingModal" onclick="event.stopPropagation()">
+
+    <div class="trainingModalHead">
+      <div>
+        <h2>Yeni Eğitim Oluştur</h2>
+        <p>Eğitimin temel bilgilerini belirleyin. Daha sonra içerikleri stüdyoda oluşturabilirsiniz.</p>
+      </div>
+      <button class="modalClose" type="button" onclick="closeNewTrainingModal()">×</button>
+    </div>
+
+    <div class="trainingModalBody">
+      <div class="modalGrid">
+
+        <div class="modalFull">
+          <label class="modalLabel">Eğitim Adı *</label>
+          <input id="newTrainingTitle" class="modalField"
+                 placeholder="Örn. Gıda Güvenliğinde Kritik Kontrol Noktaları"
+                 maxlength="160" oninput="validateNewTrainingForm()">
+        </div>
+
+        <div class="modalFull">
+          <label class="modalLabel">Kısa Açıklama</label>
+          <textarea id="newTrainingDescription" class="modalField"
+                    placeholder="Personel bu eğitimde ne öğrenecek?"></textarea>
+        </div>
+
+        <div>
+          <label class="modalLabel">Kategori</label>
+          <input id="newTrainingCategory" class="modalField"
+                 list="trainingCategoryList" placeholder="Kategori seçin veya yazın">
+          <datalist id="trainingCategoryList">
+            <option value="Genel">
+            <option value="Oryantasyon">
+            <option value="Gıda Güvenliği">
+            <option value="İş Sağlığı ve Güvenliği">
+            <option value="Kalite">
+            <option value="Sürdürülebilirlik">
+            <option value="Misafir Deneyimi">
+            <option value="Operasyon">
+            <option value="İnsan Kaynakları">
+          </datalist>
+        </div>
+
+        <div>
+          <label class="modalLabel">Eğitim Türü</label>
+          <select id="newTrainingRequirement" class="modalField">
+            <option value="ZORUNLU">Zorunlu</option>
+            <option value="ISTEGE_BAGLI">İsteğe Bağlı</option>
+          </select>
+        </div>
+
+        <div class="modalFull">
+          <label class="modalLabel">Kapak Görseli</label>
+          <div id="coverPicker" class="coverPicker" onclick="chooseCoverImage()">
+            <div id="coverPickerEmpty" class="coverPickerEmpty">
+              🖼
+              <strong>Kapak görseli seç</strong>
+              JPG, PNG veya WebP · otomatik optimize edilir
+            </div>
+            <img id="coverPreview" class="hidden" alt="Kapak önizleme">
+          </div>
+          <input id="coverImageInput" type="file"
+                 accept="image/jpeg,image/png,image/webp"
+                 class="hidden" onchange="coverImageSelected(event)">
+        </div>
+
+        <div class="modalFull">
+          <label class="modalLabel">Hedef Departmanlar</label>
+          <div class="departmentBox">
+            <label class="departmentAll">
+              <input id="allDepartmentsCheck" type="checkbox" checked
+                     onchange="toggleAllDepartments(this.checked)">
+              Tüm Departmanlar
+            </label>
+            <div id="departmentGrid" class="departmentGrid"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="trainingModalFoot">
+      <button class="btn" type="button" onclick="closeNewTrainingModal()">Vazgeç</button>
+      <button id="createTrainingConfirmBtn"
+              class="btn btnPrimary modalCreateBtn"
+              type="button" disabled
+              onclick="confirmCreateTraining()">
+        ＋ Eğitimi Oluştur
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<div class="uploadOverlay hidden" id="uploadOverlay">
+
+  <div class="uploadBox">
+
+    <div class="spinner"></div>
+
+    <h3 style="margin:0">
+      Fotoğraf optimize ediliyor
+    </h3>
+
+    <p id="uploadText"
+       style="color:var(--muted);font-size:13px">
+      Görsel eğitim için hazırlanıyor...
+    </p>
+
+    <div class="progress">
+      <div class="progressBar"
+           id="progressBar"></div>
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+/* ============================================================
+   GITHUB -> APPS SCRIPT EĞİTMEN API
+   Aşağıdaki URL'yi Apps Script yeni dağıtım /exec adresinizle değiştirin.
+============================================================ */
+const EGITMEN_API_URL = 'BURAYA_APPS_SCRIPT_EXEC_URL';
+const EGITMEN_SESSION_KEY = 'TBPG_EGITMEN_SESSION_V1';
+let EGITMEN_TOKEN = localStorage.getItem(EGITMEN_SESSION_KEY) || '';
+
+async function apiCall(action, data){
+  if(!EGITMEN_API_URL || EGITMEN_API_URL.indexOf('BURAYA_')===0){
+    throw new Error('Apps Script API URL henüz tanımlanmadı.');
+  }
+  const payload = Object.assign({}, data || {}, {
+    api:'egitmen',
+    action:action,
+    token:EGITMEN_TOKEN
+  });
+  const response = await fetch(EGITMEN_API_URL, {
+    method:'POST',
+    redirect:'follow',
+    headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body:JSON.stringify(payload)
+  });
+  const text = await response.text();
+  let res;
+  try{ res=JSON.parse(text); }
+  catch(e){ throw new Error('Sunucudan geçersiz yanıt alındı.'); }
+  if(!res || res.ok===false){
+    if(res && res.code==='AUTH'){
+      EGITMEN_TOKEN='';
+      localStorage.removeItem(EGITMEN_SESSION_KEY);
+      showLogin();
+    }
+    throw new Error((res && res.message) || 'İşlem başarısız.');
+  }
+  return res;
+}
+
+function showLogin(message){
+  document.getElementById('authOverlay').classList.remove('hidden');
+  document.getElementById('authError').textContent=message || '';
+  setTimeout(()=>document.getElementById('authPassword').focus(),50);
+}
+function hideLogin(){
+  document.getElementById('authOverlay').classList.add('hidden');
+  document.getElementById('authError').textContent='';
+  document.getElementById('authPassword').value='';
+}
+async function loginSubmit(event){
+  event.preventDefault();
+  const btn=document.getElementById('authLoginBtn');
+  const password=document.getElementById('authPassword').value;
+  btn.disabled=true; btn.textContent='Kontrol ediliyor...';
+  document.getElementById('authError').textContent='';
+  try{
+    const res=await apiCall('login',{userId:'PG9039791365',password:password,token:''});
+    EGITMEN_TOKEN=res.token;
+    localStorage.setItem(EGITMEN_SESSION_KEY,EGITMEN_TOKEN);
+    hideLogin();
+    initStudio();
+  }catch(err){
+    showLogin(err.message || String(err));
+  }finally{
+    btn.disabled=false; btn.textContent='Giriş Yap';
+  }
+}
+async function logoutEgitmen(){
+  try{ if(EGITMEN_TOKEN) await apiCall('logout',{}); }catch(e){}
+  EGITMEN_TOKEN='';
+  localStorage.removeItem(EGITMEN_SESSION_KEY);
+  showLogin('Oturum kapatıldı.');
+}
+async function verifySession(){
+  if(!EGITMEN_TOKEN){ showLogin(); return false; }
+  try{
+    await apiCall('session',{});
+    hideLogin();
+    return true;
+  }catch(e){
+    showLogin('Oturum süreniz dolmuş. Lütfen tekrar giriş yapın.');
+    return false;
+  }
+}
+
+
+/* ============================================================
+   DATA MODEL
+============================================================ */
+
+let state = {
+
+  id:null,
+
+  title:'Yeni Eğitim',
+
+  description:'',
+
+  status:'TASLAK',
+
+  selectedPage:0,
+
+  selectedBlock:null,
+
+  pages:[
+    {
+      id:createId('P'),
+      title:'Eğitim Başlığı',
+      section:'Bölüm 1',
+      blocks:[
+        {
+          id:createId('B'),
+          type:'text',
+          content:
+            'Bu alana tıklayarak eğitim içeriğinizi yazmaya başlayabilirsiniz.'
+        }
+      ]
+    }
+  ]
+
+};
+
+let undoStack=[];
+let redoStack=[];
+let autoSaveTimer=null;
+
+
+/* ============================================================
+   HELPERS
+============================================================ */
+
+function createId(prefix){
+
+  return prefix + '_' +
+    Date.now().toString(36) +
+    '_' +
+    Math.random().toString(36).slice(2,7);
+
+}
+
+
+function escapeHtml(text){
+
+  const div=document.createElement('div');
+
+  div.textContent=text || '';
+
+  return div.innerHTML;
+
+}
+
+
+function currentPage(){
+
+  return state.pages[state.selectedPage];
+
+}
+
+
+function currentBlock(){
+
+  const page=currentPage();
+
+  if(!page) return null;
+
+  return page.blocks.find(
+    b=>b.id===state.selectedBlock
+  );
+
+}
+
+
+/* ============================================================
+   RENDER
+============================================================ */
+
+function render(){
+
+  renderStructure();
+  renderPage();
+  renderProperties();
+
+}
+
+
+function renderStructure(){
+
+  const box=document.getElementById('structure');
+
+  box.innerHTML='';
+
+  const groups={};
+
+  state.pages.forEach((p,index)=>{
+
+    const section=p.section || 'Bölüm 1';
+
+    if(!groups[section])
+      groups[section]=[];
+
+    groups[section].push({
+      page:p,
+      index:index
+    });
+
+  });
+
+
+  Object.keys(groups).forEach(section=>{
+
+    const sec=document.createElement('div');
+
+    sec.className='section';
+
+    const title=document.createElement('div');
+
+    title.className='sectionTitle';
+
+    title.innerHTML=
+      '<span>⋮⋮</span><span>'+
+      escapeHtml(section)+
+      '</span>';
+
+    sec.appendChild(title);
+
+
+    groups[section].forEach(item=>{
+
+      const p=item.page;
+
+      const row=document.createElement('div');
+
+      row.className=
+        'pageItem'+
+        (item.index===state.selectedPage
+          ?' active':'');
+
+      row.onclick=()=>{
+
+        state.selectedPage=item.index;
+
+        state.selectedBlock=null;
+
+        render();
+
+      };
+
+
+      row.innerHTML=`
+        <div class="pageNumber">
+          ${item.index+1}
+        </div>
+
+        <div class="pageInfo">
+
+          <div class="pageName">
+            ${escapeHtml(p.title || 'Başlıksız Sayfa')}
+          </div>
+
+          <div class="pageType">
+            ${p.blocks.length} içerik
+          </div>
+
+        </div>
+      `;
+
+      sec.appendChild(row);
+
+    });
+
+
+    box.appendChild(sec);
+
+  });
+
+}
+
+
+/* ============================================================
+   PAGE
+============================================================ */
+
+function renderPage(){
+
+  const page=currentPage();
+
+  if(!page) return;
+
+
+  document.getElementById('pageIndicator')
+    .textContent=
+      'Sayfa '+(state.selectedPage+1);
+
+
+  document.getElementById('pageTitle')
+    .value=page.title || '';
+
+
+  const box=document.getElementById('blocks');
+
+  box.innerHTML='';
+
+
+  page.blocks.forEach((block,index)=>{
+
+    const el=document.createElement('div');
+
+    el.className=
+      'block'+
+      (state.selectedBlock===block.id
+        ?' selected':'');
+
+    el.dataset.id=block.id;
+
+
+    el.onclick=function(e){
+
+      e.stopPropagation();
+
+      state.selectedBlock=block.id;
+
+      render();
+
+    };
+
+
+    let body='';
+
+
+    if(block.type==='text'){
+
+      body=`
+        <div class="textBlock"
+             contenteditable="true"
+             oninput="updateBlockText(
+               '${block.id}',
+               this.innerText
+             )">
+          ${escapeHtml(block.content)}
+        </div>
+      `;
+
+    }
+
+
+    else if(block.type==='info'){
+
+      body=`
+        <div class="infoBlock"
+             contenteditable="true"
+             oninput="updateBlockText(
+               '${block.id}',
+               this.innerText
+             )">
+          ${escapeHtml(block.content)}
+        </div>
+      `;
+
+    }
+
+
+    else if(block.type==='image'){
+
+      body=`
+        <div class="imageBlock">
+
+          <img src="${block.dataUrl}">
+
+          <div class="imageMeta">
+            ${escapeHtml(block.name || 'Görsel')}
+            ·
+            ${block.optimizedKB || 0} KB
+          </div>
+
+        </div>
+      `;
+
+    }
+
+
+    else if(block.type==='video'){
+
+      body=`
+        <div class="mediaPlaceholder">
+          <div style="font-size:34px">▶</div>
+          <strong>Video</strong>
+          <div style="margin-top:5px;font-size:12px">
+            Video bağlantısını sağ panelden ekleyin.
+          </div>
+        </div>
+      `;
+
+    }
+
+
+    else if(block.type==='pdf'){
+
+      body=`
+        <div class="mediaPlaceholder">
+          <div style="font-size:34px">▤</div>
+          <strong>PDF / Sunum</strong>
+          <div style="margin-top:5px;font-size:12px">
+            Dosyayı veya bağlantıyı ekleyin.
+          </div>
+        </div>
+      `;
+
+    }
+
+
+    else if(block.type==='question'){
+
+      body=`
+        <div class="questionBlock">
+
+          <div class="questionTitle">
+            ${escapeHtml(
+              block.question ||
+              'Sorunuzu buraya yazın'
+            )}
+          </div>
+
+          ${(block.options || [
+            'A seçeneği',
+            'B seçeneği',
+            'C seçeneği'
+          ]).map(o=>`
+            <div class="questionOption">
+              ○ ${escapeHtml(o)}
+            </div>
+          `).join('')}
+
+        </div>
+      `;
+
+    }
+
+
+    el.innerHTML=`
+
+      <div class="blockTools">
+
+        <button
+          title="Yukarı"
+          onclick="
+            event.stopPropagation();
+            moveBlock('${block.id}',-1)
+          ">
+          ↑
+        </button>
+
+        <button
+          title="Aşağı"
+          onclick="
+            event.stopPropagation();
+            moveBlock('${block.id}',1)
+          ">
+          ↓
+        </button>
+
+        <button
+          title="Kopyala"
+          onclick="
+            event.stopPropagation();
+            duplicateBlock('${block.id}')
+          ">
+          ⧉
+        </button>
+
+        <button
+          title="Sil"
+          onclick="
+            event.stopPropagation();
+            deleteBlock('${block.id}')
+          ">
+          ×
+        </button>
+
+      </div>
+
+      ${body}
+
+    `;
+
+
+    box.appendChild(el);
+
+  });
+
+}
+
+
+/* ============================================================
+   PROPERTIES
+============================================================ */
+
+function renderProperties(){
+
+  const properties=
+    document.getElementById('properties');
+
+  const block=currentBlock();
+
+
+  if(!block){
+
+    document.getElementById(
+      'propertyDescription'
+    ).textContent='Eğitim ayarları';
+
+
+    properties.innerHTML=`
+
+      <div class="propertyGroup">
+
+        <label class="propertyLabel">
+          Eğitim Adı
+        </label>
+
+        <input
+          class="field"
+          value="${escapeHtml(state.title)}"
+          oninput="updateTrainingTitle(this.value)">
+
+      </div>
+
+
+      <div class="propertyGroup">
+
+        <label class="propertyLabel">
+          Açıklama
+        </label>
+
+        <textarea
+          class="field"
+          oninput="
+            state.description=this.value;
+            changed()
+          ">${escapeHtml(state.description)}</textarea>
+
+      </div>
+
+
+      <div class="propertyGroup">
+        <label class="propertyLabel">Kategori</label>
+        <input class="field"
+               value="${escapeHtml(state.category || '')}"
+               placeholder="Kategori"
+               oninput="state.category=this.value;changed()">
+      </div>
+
+      <div class="propertyGroup">
+        <label class="propertyLabel">Eğitim Türü</label>
+        <select class="field"
+                onchange="state.requirement=this.value;changed()">
+          <option value="ZORUNLU" ${state.requirement==='ZORUNLU'?'selected':''}>Zorunlu</option>
+          <option value="ISTEGE_BAGLI" ${state.requirement==='ISTEGE_BAGLI'?'selected':''}>İsteğe Bağlı</option>
+        </select>
+      </div>
+
+      <div class="propertyGroup">
+
+        <label class="propertyLabel">
+          Yayın Durumu
+        </label>
+
+        <select
+          class="field"
+          onchange="
+            state.status=this.value;
+            changed()
+          ">
+
+          <option value="TASLAK"
+            ${state.status==='TASLAK'?'selected':''}>
+            Taslak
+          </option>
+
+          <option value="HAZIR"
+            ${state.status==='HAZIR'?'selected':''}>
+            Hazır
+          </option>
+
+          <option value="YAYINDA"
+            ${state.status==='YAYINDA'?'selected':''}>
+            Yayında
+          </option>
+
+          <option value="ARSIV"
+            ${state.status==='ARSIV'?'selected':''}>
+            Arşiv
+          </option>
+
+        </select>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  document.getElementById(
+    'propertyDescription'
+  ).textContent=
+    'Seçili içerik';
+
+
+  let html=`
+
+    <div class="propertyGroup">
+
+      <label class="propertyLabel">
+        İçerik Türü
+      </label>
+
+      <input
+        class="field"
+        value="${escapeHtml(block.type.toUpperCase())}"
+        disabled>
+
+    </div>
+
+  `;
+
+
+  if(block.type==='video' ||
+     block.type==='pdf'){
+
+    html+=`
+
+      <div class="propertyGroup">
+
+        <label class="propertyLabel">
+          Bağlantı
+        </label>
+
+        <input
+          class="field"
+          value="${escapeHtml(block.url || '')}"
+          placeholder="https://..."
+          oninput="
+            updateBlockProperty(
+              '${block.id}',
+              'url',
+              this.value
+            )
+          ">
+
+      </div>
+
+    `;
+
+  }
+
+
+  if(block.type==='question'){
+
+    html+=`
+
+      <div class="propertyGroup">
+
+        <label class="propertyLabel">
+          Soru
+        </label>
+
+        <textarea
+          class="field"
+          oninput="
+            updateBlockProperty(
+              '${block.id}',
+              'question',
+              this.value
+            )
+          ">${escapeHtml(
+            block.question ||
+            ''
+          )}</textarea>
+
+      </div>
+
+    `;
+
+  }
+
+
+  html+=`
+
+    <button
+      class="dangerBtn"
+      onclick="deleteBlock('${block.id}')">
+      İçeriği Sil
+    </button>
+
+  `;
+
+
+  properties.innerHTML=html;
+
+}
+
+
+/* ============================================================
+   PAGE OPERATIONS
+============================================================ */
+
+function addPage(){
+
+  saveUndo();
+
+  state.pages.push({
+
+    id:createId('P'),
+
+    title:
+      'Yeni Sayfa '+(state.pages.length+1),
+
+    section:'Bölüm 1',
+
+    blocks:[]
+
+  });
+
+
+  state.selectedPage=
+    state.pages.length-1;
+
+  state.selectedBlock=null;
+
+  changed();
+
+  render();
+
+}
+
+
+function updatePageTitle(value){
+
+  const page=currentPage();
+
+  if(!page) return;
+
+  page.title=value;
+
+  changed();
+
+  renderStructure();
+
+}
+
+
+/* ============================================================
+   BLOCK OPERATIONS
+============================================================ */
+
+function addBlock(type){
+
+  saveUndo();
+
+  const page=currentPage();
+
+  let block={
+    id:createId('B'),
+    type:type
+  };
+
+
+  if(type==='text'){
+
+    block.content=
+      'Metninizi buraya yazın...';
+
+  }
+
+
+  if(type==='info'){
+
+    block.content=
+      'Önemli bilgi veya hatırlatmanızı buraya yazın.';
+
+  }
+
+
+  if(type==='video' ||
+     type==='pdf'){
+
+    block.url='';
+
+  }
+
+
+  if(type==='question'){
+
+    block.question=
+      'Sorunuzu buraya yazın';
+
+    block.options=[
+      'A seçeneği',
+      'B seçeneği',
+      'C seçeneği'
+    ];
+
+    block.correct=0;
+
+  }
+
+
+  page.blocks.push(block);
+
+  state.selectedBlock=block.id;
+
+  changed();
+
+  render();
+
+}
+
+
+function updateBlockText(id,text){
+
+  const page=currentPage();
+
+  const block=
+    page.blocks.find(b=>b.id===id);
+
+  if(!block) return;
+
+  block.content=text;
+
+  changed();
+
+}
+
+
+function updateBlockProperty(
+  id,
+  key,
+  value
+){
+
+  const block=currentPage()
+    .blocks
+    .find(b=>b.id===id);
+
+  if(!block) return;
+
+  block[key]=value;
+
+  changed();
+
+  renderPage();
+
+}
+
+
+function deleteBlock(id){
+
+  const page=currentPage();
+
+  const index=
+    page.blocks.findIndex(
+      b=>b.id===id
+    );
+
+  if(index<0) return;
+
+
+  if(!confirm(
+    'Bu içeriği silmek istiyor musunuz?'
+  )) return;
+
+
+  saveUndo();
+
+  page.blocks.splice(index,1);
+
+  state.selectedBlock=null;
+
+  changed();
+
+  render();
+
+}
+
+
+function duplicateBlock(id){
+
+  const page=currentPage();
+
+  const index=
+    page.blocks.findIndex(
+      b=>b.id===id
+    );
+
+  if(index<0) return;
+
+
+  saveUndo();
+
+
+  const copy=
+    JSON.parse(
+      JSON.stringify(
+        page.blocks[index]
+      )
+    );
+
+
+  copy.id=createId('B');
+
+
+  page.blocks.splice(
+    index+1,
+    0,
+    copy
+  );
+
+
+  state.selectedBlock=copy.id;
+
+  changed();
+
+  render();
+
+}
+
+
+function moveBlock(id,direction){
+
+  const page=currentPage();
+
+  const index=
+    page.blocks.findIndex(
+      b=>b.id===id
+    );
+
+  const newIndex=
+    index+direction;
+
+
+  if(index<0 ||
+     newIndex<0 ||
+     newIndex>=page.blocks.length)
+    return;
+
+
+  saveUndo();
+
+
+  const item=
+    page.blocks.splice(index,1)[0];
+
+
+  page.blocks.splice(
+    newIndex,
+    0,
+    item
+  );
+
+
+  changed();
+
+  render();
+
+}
+
+
+/* ============================================================
+   IMAGE OPTIMIZATION
+============================================================ */
+
+function chooseImage(){
+
+  document.getElementById(
+    'imageInput'
+  ).click();
+
+}
+
+
+async function imageSelected(event){
+  const file=event.target.files[0];
+  if(!file) return;
+  const allowed=['image/jpeg','image/png','image/webp'];
+  if(!allowed.includes(file.type)){
+    alert('JPG, PNG veya WebP fotoğraf seçiniz.');
+    event.target.value=''; return;
+  }
+  showOptimizer('Fotoğraf optimize ediliyor...',15);
+  try{
+    const optimized=await optimizeImage(file);
+    showOptimizer('Boyut küçültüldü. Yükleniyor...',55);
+    const blockId=createId('B');
+    const res=await apiCall('uploadImage',{
+      dataUrl:optimized.dataUrl,
+      egitimId:state.id || 'TASLAK',
+      blockId:blockId,
+      originalName:file.name
+    });
+    showOptimizer('Fotoğraf hazır',100);
+    addOptimizedImageBlock(blockId,file,optimized,res.url || '',res.fileId || '',optimized.dataUrl);
+    setTimeout(hideOptimizer,300);
+  }catch(err){
+    hideOptimizer();
+    alert('Fotoğraf yüklenemedi: '+(err.message || err));
+  }
+  event.target.value='';
+}
+
+function addOptimizedImageBlock(blockId,file,optimized,url,fileId,localDataUrl){
+  saveUndo();
+  const block={
+    id:blockId,type:'image',name:file.name,url:url,
+    dataUrl:localDataUrl || url,fileId:fileId || '',
+    width:optimized.width,height:optimized.height,
+    optimizedKB:Math.round(optimized.bytes/1024)
+  };
+  currentPage().blocks.push(block);
+  state.selectedBlock=block.id;
+  changed(); render();
+}
+
+/*
+  FOTOĞRAF OPTİMİZASYONU
+
+  - En uzun kenar maksimum 1600 px
+  - Küçük görsel büyütülmez
+  - Oran korunur
+  - WebP %82 kalite
+*/
+
+function optimizeImage(file){
+
+  return new Promise(
+    (resolve,reject)=>{
+
+      const reader=
+        new FileReader();
+
+
+      reader.onerror=()=>reject(
+        new Error(
+          'Fotoğraf okunamadı.'
+        )
+      );
+
+
+      reader.onload=e=>{
+
+        const img=
+          new Image();
+
+
+        img.onerror=()=>reject(
+          new Error(
+            'Görsel açılamadı.'
+          )
+        );
+
+
+        img.onload=()=>{
+
+          const MAX=1600;
+
+          let width=img.width;
+          let height=img.height;
+
+
+          if(width>MAX ||
+             height>MAX){
+
+            const ratio=
+              Math.min(
+                MAX/width,
+                MAX/height
+              );
+
+            width=
+              Math.round(
+                width*ratio
+              );
+
+            height=
+              Math.round(
+                height*ratio
+              );
+
+          }
+
+
+          const canvas=
+            document.createElement(
+              'canvas'
+            );
+
+
+          canvas.width=width;
+          canvas.height=height;
+
+
+          const ctx=
+            canvas.getContext('2d');
+
+
+          ctx.imageSmoothingEnabled=true;
+
+          ctx.imageSmoothingQuality='high';
+
+
+          /*
+            PNG şeffaflığı varsa WebP
+            şeffaflığı koruyabilir.
+          */
+
+          ctx.drawImage(
+            img,
+            0,
+            0,
+            width,
+            height
+          );
+
+
+          let dataUrl;
+
+
+          try{
+
+            dataUrl=
+              canvas.toDataURL(
+                'image/webp',
+                .82
+              );
+
+          }catch(e){
+
+            dataUrl=
+              canvas.toDataURL(
+                'image/jpeg',
+                .84
+              );
+
+          }
+
+
+          /*
+            Bazı eski tarayıcılar
+            WebP isteğini PNG olarak
+            döndürebilir.
+          */
+
+          if(!dataUrl.startsWith(
+            'data:image/webp'
+          )){
+
+            dataUrl=
+              canvas.toDataURL(
+                'image/jpeg',
+                .84
+              );
+
+          }
+
+
+          const bytes=
+            Math.round(
+              (
+                dataUrl.length -
+                dataUrl.indexOf(',') -
+                1
+              ) * .75
+            );
+
+
+          resolve({
+
+            dataUrl:dataUrl,
+
+            width:width,
+
+            height:height,
+
+            bytes:bytes
+
+          });
+
+        };
+
+
+        img.src=e.target.result;
+
+      };
+
+
+      reader.readAsDataURL(file);
+
+    }
+  );
+
+}
+
+
+function showOptimizer(text,percent){
+
+  document.getElementById(
+    'uploadOverlay'
+  ).classList.remove('hidden');
+
+
+  document.getElementById(
+    'uploadText'
+  ).textContent=text;
+
+
+  document.getElementById(
+    'progressBar'
+  ).style.width=
+    percent+'%';
+
+}
+
+
+function hideOptimizer(){
+
+  document.getElementById(
+    'uploadOverlay'
+  ).classList.add('hidden');
+
+}
+
+
+/* ============================================================
+   TRAINING
+============================================================ */
+
+function updateTrainingTitle(value){
+
+  state.title=value;
+
+  document.getElementById(
+    'trainingName'
+  ).textContent=
+    value || 'Başlıksız Eğitim';
+
+  changed();
+
+}
+
+
+/* ============================================================
+   DEVICE PREVIEW
+============================================================ */
+
+function setDevice(type){
+
+  const canvas=
+    document.getElementById(
+      'canvas'
+    );
+
+
+  const desktop=
+    document.getElementById(
+      'desktopBtn'
+    );
+
+
+  const mobile=
+    document.getElementById(
+      'mobileBtn'
+    );
+
+
+  if(type==='mobile'){
+
+    canvas.classList.add(
+      'mobile'
+    );
+
+    mobile.classList.add(
+      'active'
+    );
+
+    desktop.classList.remove(
+      'active'
+    );
+
+  }else{
+
+    canvas.classList.remove(
+      'mobile'
+    );
+
+    desktop.classList.add(
+      'active'
+    );
+
+    mobile.classList.remove(
+      'active'
+    );
+
+  }
+
+}
+
+
+/* ============================================================
+   UNDO / REDO
+============================================================ */
+
+function saveUndo(){
+
+  undoStack.push(
+    JSON.stringify(state)
+  );
+
+
+  if(undoStack.length>30)
+    undoStack.shift();
+
+
+  redoStack=[];
+
+}
+
+
+function undoAction(){
+
+  if(!undoStack.length)
+    return;
+
+
+  redoStack.push(
+    JSON.stringify(state)
+  );
+
+
+  state=
+    JSON.parse(
+      undoStack.pop()
+    );
+
+
+  render();
+
+  changed();
+
+}
+
+
+function redoAction(){
+
+  if(!redoStack.length)
+    return;
+
+
+  undoStack.push(
+    JSON.stringify(state)
+  );
+
+
+  state=
+    JSON.parse(
+      redoStack.pop()
+    );
+
+
+  render();
+
+  changed();
+
+}
+
+
+/* ============================================================
+   AUTO SAVE
+============================================================ */
+
+function changed(){
+
+  const saveState=
+    document.getElementById(
+      'saveState'
+    );
+
+
+  saveState.innerHTML=
+    '● Kaydediliyor...';
+
+
+  saveState.style.color=
+    '#f5a623';
+
+
+  clearTimeout(
+    autoSaveTimer
+  );
+
+
+  autoSaveTimer=
+    setTimeout(
+      autoSave,
+      900
+    );
+
+}
+
+
+async function autoSave(){
+  const saveState=document.getElementById('saveState');
+  saveState.innerHTML='● Kaydediliyor...';
+  saveState.style.color='#f5a623';
+  try{
+    localStorage.setItem('TBPG_EGITMEN_TASLAK',JSON.stringify(state));
+    const res=await apiCall('saveDraft',{state:serverState()});
+    if(res.egitimId && !state.id) state.id=res.egitimId;
+    localStorage.setItem('TBPG_EGITMEN_TASLAK',JSON.stringify(state));
+    saveState.innerHTML='✓ Kaydedildi';
+    saveState.style.color='var(--green)';
+  }catch(err){
+    console.error('Eğitim kayıt hatası:',err);
+    saveState.innerHTML='⚠ Sunucuya kaydedilemedi';
+    saveState.style.color='var(--red)';
+  }
+}
+
+function serverState(){
+  const copy=JSON.parse(JSON.stringify(state));
+
+  delete copy.coverPreviewDataUrl;
+
+  copy.pages.forEach(function(page){
+    (page.blocks || []).forEach(function(block){
+      if(block.type==='image'){
+        delete block.dataUrl;
+      }
+    });
+  });
+
+  return copy;
+}
+
+/* ============================================================
+   PREVIEW / PUBLISH
+============================================================ */
+
+function previewTraining(){
+
+  state.selectedBlock=null;
+
+  render();
+
+
+  alert(
+    'Canlı önizleme hazır. '+
+    'Bir sonraki aşamada tam ekran personel önizlemesini bağlayacağız.'
+  );
+
+}
+
+
+function publishTraining(){
+
+  if(!state.title.trim()){
+
+    alert(
+      'Önce eğitim adını yazınız.'
+    );
+
+    return;
+
+  }
+
+
+  if(!state.pages.length){
+
+    alert(
+      'Eğitimde en az bir sayfa olmalıdır.'
+    );
+
+    return;
+
+  }
+
+
+  const ok=confirm(
+    '"' +
+    state.title +
+    '" eğitimini yayınlamaya hazırlamak istiyor musunuz?'
+  );
+
+
+  if(!ok) return;
+
+
+  state.status='HAZIR';
+
+  changed();
+
+  renderProperties();
+
+
+  alert(
+    'Eğitim HAZIR durumuna alındı. '+
+    'Sunucu bağlantısından sonra bu düğme doğrudan yayınlama işlemini yapacak.'
+  );
+
+}
+
+
+/* ============================================================
+   EĞİTİMLERİM
+============================================================ */
+
+let allEducations=[];
+
+function showEducationDashboard(){
+  if(autoSaveTimer){
+    clearTimeout(autoSaveTimer);
+    autoSaveTimer=null;
+    autoSave();
+  }
+
+  document.querySelector('.workspace').classList.add('hidden');
+  document.getElementById('educationDashboard').classList.remove('hidden');
+  document.getElementById('backToDashboardBtn').classList.add('hidden');
+  document.getElementById('trainingName').textContent='Eğitim Stüdyosu';
+  loadEducations();
+}
+
+function showEditor(){
+  document.getElementById('educationDashboard').classList.add('hidden');
+  document.querySelector('.workspace').classList.remove('hidden');
+  document.getElementById('backToDashboardBtn').classList.remove('hidden');
+  document.getElementById('trainingName').textContent=state.title || 'Yeni Eğitim';
+  render();
+}
+
+async function loadEducations(){
+  const loading=document.getElementById('educationLoading');
+  const grid=document.getElementById('educationGrid');
+  const empty=document.getElementById('educationEmpty');
+  loading.classList.remove('hidden'); grid.innerHTML=''; empty.classList.add('hidden');
+  try{
+    const res=await apiCall('list',{});
+    loading.classList.add('hidden');
+    allEducations=Array.isArray(res.egitimler) ? res.egitimler : [];
+    updateEducationStats(); renderEducationCards();
+  }catch(err){
+    loading.classList.add('hidden');
+    grid.innerHTML=`<div style="grid-column:1/-1;padding:30px;background:#fff;border-radius:15px;color:#dc4c64">
+      Eğitimler yüklenemedi.<br><br>${escapeHtml(err.message || String(err))}</div>`;
+  }
+}
+
+function updateEducationStats(){
+  let draft=0,ready=0,published=0;
+
+  allEducations.forEach(function(item){
+    const status=String(item.Durum || '').toUpperCase();
+    if(status==='TASLAK') draft++;
+    if(status==='HAZIR') ready++;
+    if(status==='YAYINDA') published++;
+  });
+
+  document.getElementById('statTotal').textContent=allEducations.length;
+  document.getElementById('statDraft').textContent=draft;
+  document.getElementById('statReady').textContent=ready;
+  document.getElementById('statPublished').textContent=published;
+}
+
+function renderEducationCards(){
+  const grid=document.getElementById('educationGrid');
+  const empty=document.getElementById('educationEmpty');
+
+  const search=(document.getElementById('educationSearchInput').value || '')
+    .trim().toLocaleLowerCase('tr-TR');
+
+  const filterStatus=document.getElementById('educationStatusFilter').value;
+
+  const filtered=allEducations.filter(function(item){
+    const name=String(item.EgitimAdi || '').toLocaleLowerCase('tr-TR');
+    const description=String(item.Aciklama || '').toLocaleLowerCase('tr-TR');
+    const itemStatus=String(item.Durum || '').toUpperCase();
+
+    return (!search || name.includes(search) || description.includes(search)) &&
+           (!filterStatus || itemStatus===filterStatus);
+  });
+
+  grid.innerHTML='';
+
+  if(!filtered.length){
+    if(!allEducations.length){
+      empty.classList.remove('hidden');
+    }else{
+      empty.classList.add('hidden');
+      grid.innerHTML=`
+        <div style="grid-column:1/-1;padding:45px 20px;text-align:center;color:var(--muted)">
+          Aramanıza uygun eğitim bulunamadı.
+        </div>`;
+    }
+    return;
+  }
+
+  empty.classList.add('hidden');
+
+  filtered.forEach(function(item){
+    const id=String(item.EgitimID || '');
+    const title=String(item.EgitimAdi || 'Başlıksız Eğitim');
+    const description=String(item.Aciklama || '');
+    const itemStatus=String(item.Durum || 'TASLAK').toUpperCase();
+    const cover=String(item.KapakURL || '');
+    const date=String(item.GuncellemeTarihi || item.OlusturmaTarihi || '');
+
+    const card=document.createElement('div');
+    card.className='educationCard';
+    card.onclick=function(){ openEducation(id); };
+
+    card.innerHTML=`
+      <div class="educationCover">
+        ${cover
+          ? `<img src="${escapeHtml(cover)}" alt="">`
+          : `<div class="educationCoverPlaceholder">T</div>`}
+        <div class="educationStatus ${escapeHtml(itemStatus)}">
+          ${educationStatusText(itemStatus)}
+        </div>
+      </div>
+
+      <div class="educationCardBody">
+        <div class="educationCardTitle">${escapeHtml(title)}</div>
+        <div class="educationCardDescription">
+          ${escapeHtml(description || 'Henüz açıklama eklenmedi.')}
+        </div>
+        <div class="educationCardFooter">
+          <div class="educationDate">${escapeHtml(date)}</div>
+          <button class="educationEdit" type="button">Düzenle →</button>
+        </div>
+      </div>`;
+
+    card.querySelector('.educationEdit').onclick=function(event){
+      event.stopPropagation();
+      openEducation(id);
+    };
+
+    grid.appendChild(card);
+  });
+}
+
+function educationStatusText(status){
+  const labels={
+    TASLAK:'Taslak',
+    HAZIR:'Hazır',
+    YAYINDA:'Yayında',
+    ARSIV:'Arşiv'
+  };
+  return labels[status] || status;
+}
+
+function filterEducationCards(){
+  renderEducationCards();
+}
+
+
+const DEFAULT_DEPARTMENTS = [
+  'Yönetim','İnsan Kaynakları','Ön Büro','Misafir İlişkileri',
+  'Yiyecek & İçecek Servis','Bar','Mutfak','Bulaşıkhane',
+  'Kat Hizmetleri','Teknik Servis','Güvenlik','Satın Alma',
+  'Tesellüm & Depo','Kalite','SPA','Animasyon'
+];
+
+let pendingCover = null;
+
+function createNewTraining(){
+  openNewTrainingModal();
+}
+
+function openNewTrainingModal(){
+  pendingCover=null;
+
+  document.getElementById('newTrainingTitle').value='';
+  document.getElementById('newTrainingDescription').value='';
+  document.getElementById('newTrainingCategory').value='';
+  document.getElementById('newTrainingRequirement').value='ZORUNLU';
+  document.getElementById('allDepartmentsCheck').checked=true;
+
+  const preview=document.getElementById('coverPreview');
+  preview.src='';
+  preview.classList.add('hidden');
+  document.getElementById('coverPickerEmpty').classList.remove('hidden');
+
+  renderDepartmentOptions();
+  toggleAllDepartments(true);
+  validateNewTrainingForm();
+
+  document.getElementById('newTrainingModal').classList.remove('hidden');
+
+  setTimeout(function(){
+    document.getElementById('newTrainingTitle').focus();
+  },80);
+}
+
+function closeNewTrainingModal(){
+  document.getElementById('newTrainingModal').classList.add('hidden');
+  pendingCover=null;
+}
+
+function modalBackdropClose(event){
+  if(event.target && event.target.id==='newTrainingModal'){
+    closeNewTrainingModal();
+  }
+}
+
+function renderDepartmentOptions(){
+  const grid=document.getElementById('departmentGrid');
+  grid.innerHTML='';
+
+  DEFAULT_DEPARTMENTS.forEach(function(name,index){
+    const id='dep_'+index;
+
+    const label=document.createElement('label');
+    label.className='departmentItem';
+    label.innerHTML=`
+      <input type="checkbox"
+             class="departmentCheck"
+             id="${id}"
+             value="${escapeHtml(name)}"
+             checked
+             onchange="departmentSelectionChanged()">
+      <span>${escapeHtml(name)}</span>
+    `;
+
+    grid.appendChild(label);
+  });
+}
+
+function toggleAllDepartments(checked){
+  document.querySelectorAll('.departmentCheck').forEach(function(cb){
+    cb.checked=checked;
+    cb.disabled=checked;
+  });
+}
+
+function departmentSelectionChanged(){
+  const boxes=[...document.querySelectorAll('.departmentCheck')];
+  const allChecked=boxes.length && boxes.every(function(cb){ return cb.checked; });
+
+  document.getElementById('allDepartmentsCheck').checked=allChecked;
+
+  boxes.forEach(function(cb){
+    cb.disabled=allChecked;
+  });
+}
+
+function selectedDepartments(){
+  if(document.getElementById('allDepartmentsCheck').checked){
+    return ['TÜM DEPARTMANLAR'];
+  }
+
+  return [...document.querySelectorAll('.departmentCheck:checked')]
+    .map(function(cb){ return cb.value; });
+}
+
+function validateNewTrainingForm(){
+  const title=(document.getElementById('newTrainingTitle').value || '').trim();
+  document.getElementById('createTrainingConfirmBtn').disabled=!title;
+}
+
+function chooseCoverImage(){
+  document.getElementById('coverImageInput').click();
+}
+
+async function coverImageSelected(event){
+  const file=event.target.files[0];
+  if(!file) return;
+
+  const allowed=['image/jpeg','image/png','image/webp'];
+
+  if(!allowed.includes(file.type)){
+    alert('JPG, PNG veya WebP fotoğraf seçiniz.');
+    event.target.value='';
+    return;
+  }
+
+  try{
+    showOptimizer('Kapak görseli optimize ediliyor...',25);
+
+    const optimized=await optimizeImage(file);
+
+    pendingCover={
+      file:file,
+      optimized:optimized,
+      fileId:'',
+      url:'',
+      localDataUrl:optimized.dataUrl
+    };
+
+    const preview=document.getElementById('coverPreview');
+    preview.src=optimized.dataUrl;
+    preview.classList.remove('hidden');
+    document.getElementById('coverPickerEmpty').classList.add('hidden');
+
+    hideOptimizer();
+  }catch(err){
+    hideOptimizer();
+    alert('Kapak görseli hazırlanamadı: '+err.message);
+  }
+
+  event.target.value='';
+}
+
+async function confirmCreateTraining(){
+  const title=(document.getElementById('newTrainingTitle').value || '').trim();
+  if(!title) return;
+  const departments=selectedDepartments();
+  if(!departments.length){ alert('En az bir hedef departman seçiniz.'); return; }
+
+  const btn=document.getElementById('createTrainingConfirmBtn');
+  btn.disabled=true; btn.textContent='Oluşturuluyor...';
+
+  const baseState={
+    id:null,title:title,
+    description:(document.getElementById('newTrainingDescription').value || '').trim(),
+    coverUrl:'',coverFileId:'',
+    coverPreviewDataUrl:pendingCover ? pendingCover.localDataUrl : '',
+    category:(document.getElementById('newTrainingCategory').value || '').trim(),
+    requirement:document.getElementById('newTrainingRequirement').value,
+    departments:departments,status:'TASLAK',selectedPage:0,selectedBlock:null,
+    pages:[{id:createId('P'),title:'Giriş',section:'Bölüm 1',
+      blocks:[{id:createId('B'),type:'text',content:'Eğitim içeriğinizi buradan oluşturmaya başlayın.'}]}]
+  };
+
+  try{
+    if(pendingCover){
+      showOptimizer('Kapak görseli yükleniyor...',60);
+      const res=await apiCall('uploadImage',{
+        dataUrl:pendingCover.optimized.dataUrl,
+        egitimId:'YENI_EGITIM',
+        blockId:'KAPAK_'+Date.now(),
+        originalName:pendingCover.file.name
+      });
+      baseState.coverUrl=res.url || '';
+      baseState.coverFileId=res.fileId || '';
+      hideOptimizer();
+    }
+    state=baseState; undoStack=[]; redoStack=[];
+    localStorage.setItem('TBPG_EGITMEN_TASLAK',JSON.stringify(state));
+    closeNewTrainingModal(); showEditor();
+    await autoSave();
+  }catch(err){
+    hideOptimizer();
+    alert('Eğitim oluşturulamadı: '+(err.message || err));
+  }finally{
+    btn.disabled=false; btn.textContent='＋ Eğitimi Oluştur';
+  }
+}
+
+async function openEducation(egitimId){
+  if(!egitimId) return;
+  const loading=document.getElementById('educationLoading');
+  loading.classList.remove('hidden');
+  try{
+    const res=await apiCall('get',{egitimId:egitimId});
+    loading.classList.add('hidden');
+    if(!res.state) throw new Error('Eğitim verisi bulunamadı.');
+    state=res.state;
+    state.coverPreviewDataUrl=state.coverUrl || '';
+    state.selectedPage=0; state.selectedBlock=null;
+    (state.pages || []).forEach(function(page){
+      (page.blocks || []).forEach(function(block){
+        if(block.type==='image' && !block.dataUrl) block.dataUrl=block.url || '';
+      });
+    });
+    undoStack=[]; redoStack=[];
+    localStorage.setItem('TBPG_EGITMEN_TASLAK',JSON.stringify(state));
+    showEditor();
+  }catch(err){
+    loading.classList.add('hidden');
+    alert('Eğitim açılamadı: '+(err.message || err));
+  }
+}
+
+/* ============================================================
+   INITIALIZE
+============================================================ */
+
+function initStudio(){
+  document.querySelector('.workspace').classList.add('hidden');
+  document.getElementById('educationDashboard').classList.remove('hidden');
+  document.getElementById('backToDashboardBtn').classList.add('hidden');
+  document.getElementById('trainingName').textContent='Eğitim Stüdyosu';
+  loadEducations();
+}
+
+async function init(){
+  if(await verifySession()) initStudio();
+}
+
+
+document
+  .getElementById('canvas')
+  .addEventListener(
+    'click',
+    function(e){
+
+      if(
+        e.target.id==='canvas' ||
+        e.target.id==='blocks'
+      ){
+
+        state.selectedBlock=null;
+
+        renderProperties();
+        renderPage();
+
+      }
+
+    }
+  );
+
+
+init();
+
+</script>
+
+</body>
+</html>
