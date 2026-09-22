@@ -4,13 +4,20 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#004d80">
-  <title>Eğitim Stüdyosu</title>
-  <meta http-equiv="refresh" content="0;url=https://script.google.com/macros/s/AKfycbwILET73oxPT8j7QWtoQSZ3HLbOWSWrFWczIDp484jx0dQjGRKRayEM-CKibHD6rzC7/exec">
-  <script>
-    location.replace('https://script.google.com/macros/s/AKfycbwILET73oxPT8j7QWtoQSZ3HLbOWSWrFWczIDp484jx0dQjGRKRayEM-CKibHD6rzC7/exec');
-  </script>
+  <title>TUI BLUE Palm Garden | Eğitim Stüdyosu</title>
+  <style>
+    *{box-sizing:border-box}
+    html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#004d80}
+    #loading{position:fixed;inset:0;display:grid;place-items:center;color:#fff;font:700 16px Arial,sans-serif;background:linear-gradient(135deg,#003f6b,#007fb5);z-index:2}
+    #app{position:fixed;inset:0;width:100%;height:100%;border:0;background:#fff}
+  </style>
 </head>
-<body style="margin:0;font-family:Arial,sans-serif;background:#004d80;color:white;display:grid;place-items:center;min-height:100vh">
-  <div>Eğitim Stüdyosu açılıyor…</div>
+<body>
+  <div id="loading">Eğitim Stüdyosu açılıyor…</div>
+  <iframe id="app" title="Eğitim Stüdyosu"
+    src="https://script.google.com/macros/s/AKfycbwILET73oxPT8j7QWtoQSZ3HLbOWSWrFWczIDp484jx0dQjGRKRayEM-CKibHD6rzC7/exec"
+    allow="clipboard-read; clipboard-write; fullscreen"
+    onload="document.getElementById('loading').style.display='none'">
+  </iframe>
 </body>
 </html>
